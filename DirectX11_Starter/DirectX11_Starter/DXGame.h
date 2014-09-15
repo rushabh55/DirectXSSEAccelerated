@@ -13,7 +13,7 @@
 #include <string>
 #include <d3d11.h>
 #include <assert.h>
-
+#include "Core/BasicTypes.h"
 #include "dxerr.h"
 #include "GameTimer.h"
 
@@ -50,7 +50,7 @@ public:
 	float AspectRatio()const;
 	
 	// The game loop
-	int Run();
+	i32 Run();
  
 	// Methods called by the game loop - override these in
 	// derived classes to implement custom functionality
@@ -61,9 +61,9 @@ public:
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Convenience overrides for handling mouse input.
-	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
-	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
-	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
+	virtual void OnMouseDown(WPARAM btnState, i32 x, i32 y){ }
+	virtual void OnMouseUp(WPARAM btnState, i32 x, i32 y)  { }
+	virtual void OnMouseMove(WPARAM btnState, i32 x, i32 y){ }
 
 protected:
 	// Handles window and Direct3D initialization
@@ -101,8 +101,8 @@ protected:
 
 	// Derived class can set these in derived constructor to customize starting values.
 	std::wstring windowCaption;
-	int windowWidth;
-	int windowHeight;
+	i32 windowWidth;
+	i32 windowHeight;
 	bool enable4xMsaa;
 };
 

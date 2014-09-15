@@ -1,0 +1,46 @@
+﻿Build started 9/15/2014 10:50:20 AM.
+     1>Project "\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\Fluid3D_2008.vcxproj" on node 2 (Build target(s)).
+     1>CustomBuild:
+         '\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source'
+         CMD.EXE was started with the above path as the current directory.
+         UNC paths are not supported.  Defaulting to Windows directory.
+         Performing Custom Build Tools
+         Microsoft (R) Direct3D Shader Compiler 9.30.9200.20789
+         Copyright (C) Microsoft Corporation 2002-2011. All rights reserved.
+         
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(52,16-27): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(53,9-21): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(68,16-27): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(69,9-21): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(84,16-27): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(89,9-21): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(149,18-50): warning X3206: 'mul': implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(149,3-50): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(150,18-50): warning X3206: 'mul': implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(150,10-57): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(153,12-24): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(174,7-20): warning X3203: signed/unsigned mismatch, unsigned assumed
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(202,7-20): warning X3203: signed/unsigned mismatch, unsigned assumed
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(234,7-20): warning X3203: signed/unsigned mismatch, unsigned assumed
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(259,35-48): warning X3203: signed/unsigned mismatch, unsigned assumed
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(273,19-32): warning X3203: signed/unsigned mismatch, unsigned assumed
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(300,12-51): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(357,12-32): warning X3206: 'mul': implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(357,3-32): warning X3206: implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(358,12-32): warning X3206: 'mul': implicit truncation of vector type
+     1>\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlsl(358,3-32): warning X3206: implicit truncation of vector type
+         
+         failed writing C:\Windows\Release\fluid3D.hla
+         compilation object save succeeded; see \\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\fluid3D.hlo
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IDXUT\Core /IDXUT\Optional /Zi /nologo /W4 /WX- /O2 /Ob1 /Oy /D WIN32 /D NDEBUG /D _WINDOWS /D D3DXFX_LARGEADDRESS_HANDLE /D _VC80_UPGRADE=0x0710 /D _UNICODE /D UNICODE /GF /Gm- /MD /GS /Gy /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Algebra.cpp Fluid3D.cpp TrackBall.cpp
+         Algebra.cpp
+         Fluid3D.cpp
+     1>Fluid3D.cpp(7): fatal error C1083: Cannot open include file: 'd3dx11.h': No such file or directory
+         TrackBall.cpp
+         Generating Code...
+     1>Done Building Project "\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\Fluid3D_2008.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.04

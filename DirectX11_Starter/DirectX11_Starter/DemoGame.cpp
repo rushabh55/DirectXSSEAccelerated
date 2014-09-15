@@ -28,8 +28,8 @@
 #pragma region Win32 Entry Point (WinMain)
 
 // Win32 Entry Point
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
-				   PSTR cmdLine, int showCmd)
+i32 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
+				   PSTR cmdLine, i32 showCmd)
 {
 	// Enable run-time memory check for debug builds.
 #if defined(DEBUG) | defined(_DEBUG)
@@ -78,6 +78,8 @@ bool DemoGame::Init()
 {
 	if( !DXGame::Init() )
 		return false;
+
+	i128 i;
 
 	// Set up buffers and such
 	CreateGeometryBuffers();
@@ -294,7 +296,7 @@ void DemoGame::DrawScene()
 
 // These methods don't do much currently, but can be used for mouse-related input
 
-void DemoGame::OnMouseDown(WPARAM btnState, int x, int y)
+void DemoGame::OnMouseDown(WPARAM btnState, i32 x, i32 y)
 {
 	prevMousePos.x = x;
 	prevMousePos.y = y;
@@ -302,12 +304,12 @@ void DemoGame::OnMouseDown(WPARAM btnState, int x, int y)
 	SetCapture(hMainWnd);
 }
 
-void DemoGame::OnMouseUp(WPARAM btnState, int x, int y)
+void DemoGame::OnMouseUp(WPARAM btnState, i32 x, i32 y)
 {
 	ReleaseCapture();
 }
 
-void DemoGame::OnMouseMove(WPARAM btnState, int x, int y)
+void DemoGame::OnMouseMove(WPARAM btnState, i32 x, i32 y)
 {
 	prevMousePos.x = x;
 	prevMousePos.y = y;

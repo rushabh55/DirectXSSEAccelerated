@@ -1,0 +1,34 @@
+﻿Build started 9/15/2014 12:29:06 PM.
+     1>Project "\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\Fluid3D_2008.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IDXUT\Core /IDXUT\Optional /ZI /nologo /W4 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D D3DXFX_LARGEADDRESS_HANDLE /D _VC80_UPGRADE=0x0710 /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Algebra.cpp Fluid3D.cpp TrackBall.cpp
+         TrackBall.cpp
+         Fluid3D.cpp
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(172): warning C4100: 'lpCmdLine' : unreferenced formal parameter
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(172): warning C4100: 'hPrevInstance' : unreferenced formal parameter
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(301): warning C4244: '=' : conversion from 'UINT' to 'FLOAT', possible loss of data
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(302): warning C4244: '=' : conversion from 'UINT' to 'FLOAT', possible loss of data
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(675): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(677): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(745): warning C4390: ';' : empty controlled statement found; is this the intent?
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(786): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(787): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(788): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(799): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(938): warning C4996: 'swprintf': swprintf has been changed to conform with the ISO C standard, adding an extra character count parameter. To use traditional Microsoft swprintf, set _CRT_NON_CONFORMING_SWPRINTFS.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\swprintf.inl(85) : see declaration of 'swprintf'
+     1>\\banner.main.ad.rit.edu\students\rug4133\igmprofile\desktop\fluid3d\source\fluid3d.cpp(940): warning C4996: 'swprintf': swprintf has been changed to conform with the ISO C standard, adding an extra character count parameter. To use traditional Microsoft swprintf, set _CRT_NON_CONFORMING_SWPRINTFS.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\swprintf.inl(85) : see declaration of 'swprintf'
+         Algebra.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\Fluid3D.exe" /INCREMENTAL /NOLOGO d3dcompiler.lib d3d11.lib dxguid.lib winmm.lib comctl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Debug\Fluid3D.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"Debug\Fluid3D.lib" /MACHINE:X86 /SAFESEH /IGNORE:4089 Debug\Algebra.obj
+         Debug\Fluid3D.obj
+         Debug\TrackBall.obj
+     1>Algebra.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+         Fluid3D_2008.vcxproj -> \\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\Debug\Fluid3D.exe
+     1>Done Building Project "\\banner.main.ad.rit.edu\students\rug4133\IGMProfile\Desktop\Fluid3D\Source\Fluid3D_2008.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.44

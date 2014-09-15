@@ -43,9 +43,9 @@ public:
 	void DrawScene(); 
 
 	// For handing mouse input
-	void OnMouseDown(WPARAM btnState, int x, int y);
-	void OnMouseUp(WPARAM btnState, int x, int y);
-	void OnMouseMove(WPARAM btnState, int x, int y);
+	void OnMouseDown(WPARAM btnState, i32 x, i32 y);
+	void OnMouseUp(WPARAM btnState, i32 x, i32 y);
+	void OnMouseMove(WPARAM btnState, i32 x, i32 y);
 
 private:
 	// Initialization for our "game" demo

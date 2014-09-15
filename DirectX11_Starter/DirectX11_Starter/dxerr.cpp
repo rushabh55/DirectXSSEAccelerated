@@ -14,7 +14,7 @@
 // This version only supports UNICODE.
 
 #include "dxerr.h"
-
+#include "Core/BasicTypes.h"
 #include <stdio.h>
 #include <algorithm>
 
@@ -3951,7 +3951,7 @@ HRESULT WINAPI DXTraceW( _In_z_ const WCHAR* strFile, _In_ DWORD dwLine, _In_ HR
         swprintf_s( strBuffer, BUFFER_SIZE, L"File: %s\nLine: %s\nError Code: %s\n%sDo you want to debug the application?",
                     strBufferFile, strBufferLine, strBufferError, strBufferMsg );
 
-        int nResult = MessageBoxW( GetForegroundWindow(), strBuffer, L"Unexpected error encountered", MB_YESNO | MB_ICONERROR );
+        i32 nResult = MessageBoxW( GetForegroundWindow(), strBuffer, L"Unexpected error encountered", MB_YESNO | MB_ICONERROR );
         if( nResult == IDYES )
             DebugBreak();
     }

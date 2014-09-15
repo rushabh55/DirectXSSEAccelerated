@@ -1,0 +1,584 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\System">
+      <UniqueIdentifier>{a9b59125-bc80-42df-86af-1b995d310e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System">
+      <UniqueIdentifier>{0714e81d-9ade-46df-bc4d-9fc24164d639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{73d17bf6-6995-46aa-9d96-869eeb50f0e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\Math">
+      <UniqueIdentifier>{d7588045-f4a0-4f9b-81b0-a41239cee674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Display">
+      <UniqueIdentifier>{ee3271de-7f4c-4258-bfbf-536e5ea25e14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Display">
+      <UniqueIdentifier>{35096c27-bdb2-4d3a-b395-0979af5b2074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Display\D3DShaders">
+      <UniqueIdentifier>{209bf7e9-d7d3-402f-a58c-fb3c4de7b9a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{78fca017-76e2-4ceb-aca2-a980b39afb45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\Interfaces">
+      <UniqueIdentifier>{317ba6a2-b8a8-42d8-88ad-5bac4a97b41f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{80aa6b84-7012-4870-a6e8-628c899b5954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{69febbde-21c4-485e-bcd3-75647eb9fff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Components">
+      <UniqueIdentifier>{e3b1f41d-7d66-4b4e-aa3f-0ba2ee6bf0c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Components">
+      <UniqueIdentifier>{c928a0fd-59ea-483f-ba14-14d9e73cd47d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL">
+      <UniqueIdentifier>{f9373bf5-1087-48a6-bd6a-a7d6442760b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Display\Scenes">
+      <UniqueIdentifier>{de2de645-8dad-44e3-ba1c-50a139502104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Display\Scenes">
+      <UniqueIdentifier>{551c5a9e-6413-48ca-8f09-6bc15cb6a9f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Display\Frame Buffer">
+      <UniqueIdentifier>{fd4281ee-169c-4db5-93ec-eaf34405b240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Display\Frame Buffer">
+      <UniqueIdentifier>{bfe023b3-5da9-4688-9886-b8ac73f58062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\Physics">
+      <UniqueIdentifier>{1c39e4e5-8878-49c1-96af-b5ffeb3d9a4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\Physics">
+      <UniqueIdentifier>{defab9d3-c50b-4d21-8ed9-bc7ac8bb2fea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OrthoTexture">
+      <UniqueIdentifier>{2463a2cf-8a69-42b9-b614-e5b3b5b34934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OrthoColor">
+      <UniqueIdentifier>{70f1a5a8-586e-462c-a036-c0b0d0cae17f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\VolumeRender">
+      <UniqueIdentifier>{2bdb7fb1-1b55-463b-a0b3-99d175223698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\Texture">
+      <UniqueIdentifier>{fb801e2d-b96f-4b8b-bbf9-6e1ff76ab865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\FluidCalculation">
+      <UniqueIdentifier>{85c4ba44-41c7-4354-b93b-641837eeddb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\FluidCalculation">
+      <UniqueIdentifier>{b2d9fcbd-a6bd-4548-818e-fb1e62a56563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Display\Simulations">
+      <UniqueIdentifier>{0aaa631d-561a-48e6-91cd-093a1e98e379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Display\Simulations">
+      <UniqueIdentifier>{fd6be55c-0226-46db-b1cb-df7dde383485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\Camera">
+      <UniqueIdentifier>{c5fa175f-cd3c-45c0-99f2-eef025339794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\Camera">
+      <UniqueIdentifier>{f60b5147-93f8-4f1c-8673-c81220a9c930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\Skymap">
+      <UniqueIdentifier>{f525350c-a6ef-4aec-91c4-24cd770485cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\AppTimer">
+      <UniqueIdentifier>{d55142e2-dd21-4c37-a167-10947d2b1939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\AppTimer">
+      <UniqueIdentifier>{fe173478-435a-4c51-a85f-96fa57fe863c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{9fb27a0c-beb1-4063-b213-a2c7d6956559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\house">
+      <UniqueIdentifier>{47f5224d-1139-4e02-91d2-1511a96cad55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\Heightmap">
+      <UniqueIdentifier>{9929f503-dae6-47ed-82db-fae6e79e9058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\Heightmap">
+      <UniqueIdentifier>{6ca25863-fa9c-4869-bccd-e218bef5a268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Display\D3DShaders">
+      <UniqueIdentifier>{62837f62-26ac-4acd-9c0e-77f064164010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\FluidCalculation\Fluid3D">
+      <UniqueIdentifier>{304fcd5d-e0c1-47a6-a088-099777c35e73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\FluidCalculation\Fluid3D">
+      <UniqueIdentifier>{ecbe197a-d742-4c17-ba70-17f7a7aa6a30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\FluidCalculation\Fluid2D">
+      <UniqueIdentifier>{ccf014b5-2571-4264-a97a-ec75b03632de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\FluidCalculation\Fluid2D">
+      <UniqueIdentifier>{d603e68b-427f-4841-86a7-e01da90d8566}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\fountain">
+      <UniqueIdentifier>{57ade616-c096-4062-960f-b32af383c614}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\system\MainSystem.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DGraphicsObject.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DRenderer.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\BaseD3DShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\D3DTexture.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\OrthoTextureShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\OrthoColorShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\D2DTexQuad.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\D2DColorQuad.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\WaveShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\Console.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\Scenes\Fluid2DScene.cpp">
+      <Filter>Source Files\Display\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\PerformanceMonitor.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\Scenes\Fluid3DScene.cpp">
+      <Filter>Source Files\Display\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DFrameBuffer.cpp">
+      <Filter>Source Files\Display\Frame Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\Scenes\RigidBodyScene3D.cpp">
+      <Filter>Source Files\Display\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\Screen.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\Physics.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\Bounds.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\Component.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\RigidBody3D.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\BaseD3DBody.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\Collider.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\BoxCollider.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\CollisionManager.cpp">
+      <Filter>Source Files\Utilities\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\system\InputSystemImpl.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="source\system\GraphicsSystemImpl.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\TextureShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\GeometryBuilder.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\VolumeRenderer.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\simulations\FluidSimulation.cpp">
+      <Filter>Source Files\Display\Simulations</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\FluidCalculation\FluidSettings.cpp">
+      <Filter>Source Files\Utilities\FluidCalculation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\CameraImpl.cpp">
+      <Filter>Source Files\Utilities\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\SkyObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\SkyShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\FluidCalculation\FluidResources.cpp">
+      <Filter>Source Files\Utilities\FluidCalculation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\AppTimer\AppTimerImpl.cpp">
+      <Filter>Source Files\Utilities\AppTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\ModelGameObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\PrimitiveGameObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\objects\TerrainObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\HeightmapParser.cpp">
+      <Filter>Source Files\Utilities\Heightmap</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\HeightMap.cpp">
+      <Filter>Source Files\Utilities\Heightmap</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\TerrainTextureShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\FluidCalculation\Fluid3DCalculator.cpp">
+      <Filter>Source Files\Utilities\FluidCalculation\Fluid3D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\FluidCalculation\Fluid2DCalculator.cpp">
+      <Filter>Source Files\Utilities\FluidCalculation\Fluid2D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\FluidCalculation\Fluid2DShaders.cpp">
+      <Filter>Source Files\Utilities\FluidCalculation\Fluid2D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\FluidCalculation\Fluid3DShaders.cpp">
+      <Filter>Source Files\Utilities\FluidCalculation\Fluid3D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\FireRenderShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\D3DShaders\SmokeRenderShader.cpp">
+      <Filter>Source Files\Display\D3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\display\simulations\LODController.cpp">
+      <Filter>Source Files\Display\Simulations</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utilities\AutoCameraController.cpp">
+      <Filter>Source Files\Utilities\Camera</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\utilities\D3dIncludes.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\system\MainSystem.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\math\MathUtils.h">
+      <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\IGraphicsObject.h">
+      <Filter>Header Files\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DGraphicsObject.h">
+      <Filter>Header Files\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DRenderer.h">
+      <Filter>Header Files\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\BaseD3DShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\system\ServiceProvider.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\D3DTexture.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\OrthoTextureShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\OrthoColorShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\IRenderable.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\D2DTexQuad.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\D2DColorQuad.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\Transform.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\WaveShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\Console.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\Scenes\IScene.h">
+      <Filter>Header Files\Display\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\Scenes\Fluid2DScene.h">
+      <Filter>Header Files\Display\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\PerformanceMonitor.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\Scenes\Fluid3DScene.h">
+      <Filter>Header Files\Display\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\IFrameBuffer.h">
+      <Filter>Header Files\Display\Frame Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DFrameBuffer.h">
+      <Filter>Header Files\Display\Frame Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\Scenes\RigidBodyScene3D.h">
+      <Filter>Header Files\Display\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\Screen.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\Bounds.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\GameObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\Component.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\BaseD3DBody.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\RigidBody3D.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\Collider.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\BoxCollider.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\Physics.h">
+      <Filter>Header Files\Utilities\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\CollisionManager.h">
+      <Filter>Header Files\Utilities\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\system\InputSystemImpl.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="source\system\InputSystem.h">
+      <Filter>Header Files\System\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="source\system\GraphicsSystemImpl.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\ShaderParams.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\AtlInclude.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\TextureShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\GeometryBuilder.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\VolumeRenderer.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\simulations\FluidSimulation.h">
+      <Filter>Header Files\Display\Simulations</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\FluidCalculation\FluidSettings.h">
+      <Filter>Header Files\Utilities\FluidCalculation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\CameraImpl.h">
+      <Filter>Header Files\Utilities\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="source\system\IGraphicsSystem.h">
+      <Filter>Header Files\System\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\ICamera.h">
+      <Filter>Header Files\Utilities\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\SkyObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\SkyShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\StringUtils.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\FluidCalculation\FluidResources.h">
+      <Filter>Header Files\Utilities\FluidCalculation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\AppTimer\IAppTimer.h">
+      <Filter>Header Files\Utilities\AppTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\AppTimer\AppTimerImpl.h">
+      <Filter>Header Files\Utilities\AppTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\ModelGameObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\PrimitiveGameObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\TgaHeader.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\objects\TerrainObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\HeightMap.h">
+      <Filter>Header Files\Utilities\Heightmap</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\HeightmapParser.h">
+      <Filter>Header Files\Utilities\Heightmap</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\TerrainTextureShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\FluidCalculation\Fluid3DCalculator.h">
+      <Filter>Header Files\Utilities\FluidCalculation\Fluid3D</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\FluidCalculation\Fluid3DBuffers.h">
+      <Filter>Header Files\Utilities\FluidCalculation\Fluid3D</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\FluidCalculation\Fluid3DShaders.h">
+      <Filter>Header Files\Utilities\FluidCalculation\Fluid3D</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\FluidCalculation\Fluid2DCalculator.h">
+      <Filter>Header Files\Utilities\FluidCalculation\Fluid2D</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\FluidCalculation\Fluid2DShaders.h">
+      <Filter>Header Files\Utilities\FluidCalculation\Fluid2D</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\FireRenderShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\D3DShaders\SmokeRenderShader.h">
+      <Filter>Header Files\Display\D3DShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\display\simulations\LODController.h">
+      <Filter>Header Files\Display\Simulations</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\math\Interpolate.h">
+      <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\AutoCameraController.h">
+      <Filter>Header Files\Utilities\Camera</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hlsl\cWaveEquation.hlsl">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="hlsl\pFluid2DTexture.psh">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="hlsl\vOrthotexture.vsh">
+      <Filter>HLSL\OrthoTexture</Filter>
+    </None>
+    <None Include="hlsl\pOrthocolor.psh">
+      <Filter>HLSL\OrthoColor</Filter>
+    </None>
+    <None Include="hlsl\vOrthocolor.vsh">
+      <Filter>HLSL\OrthoColor</Filter>
+    </None>
+    <None Include="hlsl\vTexture.vsh">
+      <Filter>HLSL\Texture</Filter>
+    </None>
+    <None Include="hlsl\pTexture.psh">
+      <Filter>HLSL\Texture</Filter>
+    </None>
+    <None Include="hlsl\pOrthotexture.psh">
+      <Filter>HLSL\OrthoTexture</Filter>
+    </None>
+    <None Include="hlsl\pVolumeRender.psh">
+      <Filter>HLSL\VolumeRender</Filter>
+    </None>
+    <None Include="hlsl\vVolumeRender.vsh">
+      <Filter>HLSL\VolumeRender</Filter>
+    </None>
+    <None Include="hlsl\pSkymap.psh">
+      <Filter>HLSL\Skymap</Filter>
+    </None>
+    <None Include="hlsl\vSkymap.vsh">
+      <Filter>HLSL\Skymap</Filter>
+    </None>
+    <None Include="hlsl\pTerrainTexture.psh">
+      <Filter>HLSL\Texture</Filter>
+    </None>
+    <None Include="hlsl\vTerrainTexture.vsh">
+      <Filter>HLSL\Texture</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="hlsl\cFluid2D.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="hlsl\cFluid3D.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="data\models\house\English_thatched_house.FBX">
+      <Filter>Models\house</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="data\models\fountain\Fountain.fbx">
+      <Filter>Models\fountain</Filter>
+    </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="data\models\house\english_house_texture.bmp">
+      <Filter>Models\house</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="data\models\fountain\wmarble.jpg">
+      <Filter>Models\fountain</Filter>
+    </ImageContentTask>
+  </ItemGroup>
+</Project>

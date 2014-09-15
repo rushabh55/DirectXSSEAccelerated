@@ -10,6 +10,7 @@
 #include "DXGame.h"
 #include <WindowsX.h>
 #include <sstream>
+#include "Core/BasicTypes.h"
 
 #pragma region Global Window Callback
 namespace
@@ -120,8 +121,8 @@ bool DXGame::InitMainWindow()
 	// Compute window rectangle dimensions based on requested client area dimensions.
 	RECT R = { 0, 0, windowWidth, windowHeight };
 	AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
-	int width  = R.right - R.left;
-	int height = R.bottom - R.top;
+	i32 width  = R.right - R.left;
+	i32 height = R.bottom - R.top;
 
 	hMainWnd = CreateWindow(L"D3DWndClassName", windowCaption.c_str(), 
 		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, hAppInst, 0); 
@@ -306,7 +307,7 @@ void DXGame::OnResize()
 
 // The actual game loop, which processes the windows message queue
 // and calls our Update & Draw methods
-int DXGame::Run()
+i32 DXGame::Run()
 {
 	MSG msg = {0};
 	timer.Reset();
@@ -340,7 +341,7 @@ int DXGame::Run()
 		}
 	}
 
-	return (int)msg.wParam;
+	return (i32)msg.wParam;
 }
 
 // Computes the average frames per second, and also the 
@@ -348,7 +349,7 @@ int DXGame::Run()
 // are appended to the window caption bar.
 void DXGame::CalculateFrameStats()
 {
-	static int frameCnt = 0;
+	static i32 frameCnt = 0;
 	static float timeElapsed = 0.0f;
 
 	frameCnt++;
