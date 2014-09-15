@@ -33,3 +33,6 @@
 *.suo
 *.temp
 *.opensdf
+*.pdb
+*.ilk
+*.tlog

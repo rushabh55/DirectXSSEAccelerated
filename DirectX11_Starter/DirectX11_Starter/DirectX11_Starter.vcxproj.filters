@@ -70,9 +70,6 @@
     <FxCompile Include="computeDivergence.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="computeJaccobi.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="computeProject.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
@@ -80,6 +77,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="computeRenderer.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="computeJacoobi.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

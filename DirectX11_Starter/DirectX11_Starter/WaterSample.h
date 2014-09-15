@@ -13,17 +13,13 @@ using namespace std;
 #define SCR_WIDTH 800
 #define SCR_HEIGHT 600
 
-int DimX = DIMXYZ;
-int DimY = DIMXYZ;
-int DimZ = DIMXYZ;
+
 
 class WaterSample
 {
 public:
 	explicit	WaterSample(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	void Initialize();
-	void Update(float mouseX, float mouseY);
-	void LoadShaders();
 	void UpdateShaders();
 	void SetMousePosition(float x, float y);
 
@@ -94,7 +90,6 @@ private:
 	ID3D11DeviceContext* deviceContext;
 	f32 mousePosX;
 	f32 mousePosY;
-	f32 viewSlice;
 	f32 mousePosXPrev;
 	f32 mousePosYPrev;
 	Bool drag;

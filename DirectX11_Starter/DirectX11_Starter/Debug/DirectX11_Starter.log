@@ -1,38 +1,9 @@
-﻿Build started 9/15/2014 6:15:12 PM.
+﻿Build started 9/15/2014 6:43:22 PM.
      1>Project "D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\DirectX11_Starter.vcxproj" on node 2 (Build target(s)).
-     1>FxCompile:
-         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe /nologo /E"main" /T cs_5_0 /Fo "D:\Scratch\EnginesClass\DirectX11_Starter\Debug\computeDivergence.cso" /Od /Zi computeDivergence.hlsl 
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\computeDivergence.hlsl(31,6-21): warning X3203: signed/unsigned mismatch, unsigned assumed
-         
-         compilation object save succeeded; see D:\Scratch\EnginesClass\DirectX11_Starter\Debug\computeDivergence.cso
-         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe /nologo /E"main" /T cs_5_0 /Fo "D:\Scratch\EnginesClass\DirectX11_Starter\Debug\computeJaccobi.cso" /Od /Zi computeJaccobi.hlsl 
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\computeJaccobi.hlsl(31,6-21): warning X3203: signed/unsigned mismatch, unsigned assumed
-         
-         compilation object save succeeded; see D:\Scratch\EnginesClass\DirectX11_Starter\Debug\computeJaccobi.cso
-         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe /nologo /E"main" /T cs_5_0 /Fo "D:\Scratch\EnginesClass\DirectX11_Starter\Debug\computeRenderer.cso" /Od /Zi computeRenderer.hlsl 
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\computeRenderer.hlsl(42,10-49): warning X3206: implicit truncation of vector type
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\computeRenderer.hlsl(99,9-26): warning X3206: 'mul': implicit truncation of vector type
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\computeRenderer.hlsl(99,3-26): warning X3206: implicit truncation of vector type
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\computeRenderer.hlsl(100,11-31): warning X3206: 'mul': implicit truncation of vector type
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\computeRenderer.hlsl(100,2-31): warning X3206: implicit truncation of vector type
-         
-         compilation object save succeeded; see D:\Scratch\EnginesClass\DirectX11_Starter\Debug\computeRenderer.cso
-         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe /nologo /E"main" /T cs_5_0 /Fo "D:\Scratch\EnginesClass\DirectX11_Starter\Debug\sphereRenderer.cso" /Od /Zi sphereRenderer.hlsl 
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\sphereRenderer.hlsl(41,10-28): warning X3206: 'mul': implicit truncation of vector type
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\sphereRenderer.hlsl(41,3-28): warning X3206: implicit truncation of vector type
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\sphereRenderer.hlsl(42,17-48): warning X3206: 'mul': implicit truncation of vector type
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\sphereRenderer.hlsl(42,9-57): warning X3206: implicit truncation of vector type
-     1>D:\Scratch\EnginesClass\DirectX11_Starter\DirectX11_Starter\sphereRenderer.hlsl(45,10-23): warning X3206: implicit truncation of vector type
-         
-         compilation object save succeeded; see D:\Scratch\EnginesClass\DirectX11_Starter\Debug\sphereRenderer.cso
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\Scratch\EnginesClass\DirectX11_Starter\Math /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt WaterSample.cpp
-         WaterSample.cpp
-     1>d:\scratch\enginesclass\directx11_starter\directx11_starter\watersample.cpp(11): warning C4305: 'initializing' : truncation from 'double' to 'const f32'
-     1>d:\scratch\enginesclass\directx11_starter\directx11_starter\watersample.cpp(37): warning C4101: 'hr' : unreferenced local variable
-     1>d:\scratch\enginesclass\directx11_starter\directx11_starter\watersample.cpp(86): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>d:\scratch\enginesclass\directx11_starter\directx11_starter\watersample.cpp(87): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>d:\scratch\enginesclass\directx11_starter\directx11_starter\watersample.cpp(88): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\Scratch\EnginesClass\DirectX11_Starter\Math /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt DemoGame.cpp
+         DemoGame.cpp
+     1>d:\scratch\enginesclass\directx11_starter\directx11_starter\demogame.cpp(324): warning C4244: 'argument' : conversion from 'i32' to 'float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Scratch\EnginesClass\DirectX11_Starter\Debug\DirectX11_Starter.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\Scratch\EnginesClass\DirectX11_Starter\Math\Debug d3d11.lib d3dcompiler.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Scratch\EnginesClass\DirectX11_Starter\Debug\DirectX11_Starter.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Scratch\EnginesClass\DirectX11_Starter\Debug\DirectX11_Starter.lib" /MACHINE:X86 Debug\DemoGame.obj
          Debug\dxerr.obj
@@ -45,4 +16,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.76
+Time Elapsed 00:00:01.75

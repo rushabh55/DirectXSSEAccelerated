@@ -2,6 +2,8 @@
 
 #include <DirectXMath.h>
 #include "DXGame.h"
+#include "WaterSample.h"
+#include <iosfwd>
 
 // Include run-time memory checking in debug builds
 #if defined(DEBUG) || defined(_DEBUG)
@@ -75,4 +77,5 @@ private:
 	// Keeps track of the old mouse position.  Useful for 
 	// determining how far the mouse moved in a single frame.
 	POINT prevMousePos;
+	WaterSample* m_pWaterSample;
 };

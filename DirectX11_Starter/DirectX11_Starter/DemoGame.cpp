@@ -49,7 +49,8 @@ i32 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
 #pragma region Constructor / Destructor
 
-DemoGame::DemoGame(HINSTANCE hInstance) : DXGame(hInstance)
+DemoGame::DemoGame(HINSTANCE hInstance) : DXGame(hInstance), 
+m_pWaterSample( NULL )
 {
 	// Set up our custom caption and window size
 	windowCaption = L"Demo DX11 Game";
@@ -79,11 +80,13 @@ bool DemoGame::Init()
 	if( !DXGame::Init() )
 		return false;
 
-	i128 i;
+	m_pWaterSample = new WaterSample(device, deviceContext);
 
 	// Set up buffers and such
 	CreateGeometryBuffers();
 	LoadShadersAndInputLayout();
+
+	m_pWaterSample->Initialize();
 
 	// Set up view matrix (camera)
 	// In an actual game, update this when the camera moves (so every frame)
@@ -247,6 +250,8 @@ void DemoGame::UpdateScene(float dt)
 		&vsConstantBufferData,
 		0,
 		0);
+
+
 }
 
 // Clear the screen, redraw everything, present
@@ -262,29 +267,31 @@ void DemoGame::DrawScene()
 		1.0f,
 		0);
 
-	// Set up the input assembler
-	deviceContext->IASetInputLayout(inputLayout);
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//// Set up the input assembler
+	//deviceContext->IASetInputLayout(inputLayout);
+	//deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// Set buffers in the input assembler
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	deviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	//// Set buffers in the input assembler
+	//UINT stride = sizeof(Vertex);
+	//UINT offset = 0;
+	//deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	//deviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-	// Set the current vertex and pixel shaders, as well the constant buffer for the vert shader
-	deviceContext->VSSetShader(vertexShader, NULL, 0);
-	deviceContext->VSSetConstantBuffers(
-		0,	// Corresponds to the constant buffer's register in the vertex shader
-		1, 
-		&vsConstantBuffer);
-	deviceContext->PSSetShader(pixelShader, NULL, 0);
+	//// Set the current vertex and pixel shaders, as well the constant buffer for the vert shader
+	//deviceContext->VSSetShader(vertexShader, NULL, 0);
+	//deviceContext->VSSetConstantBuffers(
+	//	0,	// Corresponds to the constant buffer's register in the vertex shader
+	//	1, 
+	//	&vsConstantBuffer);
+	//deviceContext->PSSetShader(pixelShader, NULL, 0);
 
-	// Finally do the actual drawing
-	deviceContext->DrawIndexed(
-		3,	// The number of indices we're using in this draw
-		0,
-		0);
+	//// Finally do the actual drawing
+	//deviceContext->DrawIndexed(
+	//	3,	// The number of indices we're using in this draw
+	//	0,
+	//	0);
+
+	m_pWaterSample->UpdateShaders(); 
 
 	// Present the buffer
 	HR(swapChain->Present(0, 0));
@@ -313,5 +320,7 @@ void DemoGame::OnMouseMove(WPARAM btnState, i32 x, i32 y)
 {
 	prevMousePos.x = x;
 	prevMousePos.y = y;
+	
+	m_pWaterSample->SetMousePosition(x, y);
 }
 #pragma endregion

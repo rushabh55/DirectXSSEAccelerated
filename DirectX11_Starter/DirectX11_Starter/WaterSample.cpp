@@ -7,9 +7,13 @@
 using namespace DirectX;
 using namespace std;
 
-const u8 viewSlice = DIMXYZ / 2;
+const u8 viewSlice = 200 / 2;
 const f32 zoom = 1.2;
 const Bool smoky = true;
+
+const i16 DimX = DIMXYZ;
+const i16 DimY = DIMXYZ;
+const i16 DimZ = DIMXYZ;
 
 WaterSample::WaterSample(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
@@ -73,6 +77,42 @@ void WaterSample::Initialize()
 	}
 
 	CreateVolumes();
+
+
+
+	// Create constant buffer
+	D3D11_BUFFER_DESC Desc;
+	Desc.Usage = D3D11_USAGE_DYNAMIC;
+	Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	Desc.MiscFlags = 0;
+	Desc.ByteWidth = ((sizeof(Wave3DConstants) + 15) / 16) * 16; // must be multiple of 16 bytes
+	device->CreateBuffer(&Desc, NULL, &g_pcbWave3D);
+
+
+
+	// Create sampler state 
+	D3D11_SAMPLER_DESC SSDesc;
+	ZeroMemory(&SSDesc, sizeof(D3D11_SAMPLER_DESC));
+	SSDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	SSDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;   // zero speed at border
+	SSDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	SSDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	SSDesc.BorderColor[0] = 0;
+	SSDesc.BorderColor[1] = 0;
+	SSDesc.BorderColor[2] = 0;
+	SSDesc.BorderColor[3] = 0;
+	SSDesc.MipLODBias = 0;
+	SSDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	SSDesc.MaxAnisotropy = 16;
+	SSDesc.MinLOD = 0;
+	SSDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	device->CreateSamplerState(&SSDesc, &g_pSamplerStateLinear);
+
+	// set CS sampler
+	deviceContext->CSSetSamplers(0, 1, &g_pSamplerStateLinear);
+
+
 }
 
 void WaterSample::UpdateShaders()
@@ -147,6 +187,14 @@ void WaterSample::UpdateShaders()
 #pragma endregion
 }
 
+void WaterSample::UnbindShaders()
+{
+	ID3D11ShaderResourceView* aSRiews[] = { NULL, NULL };
+	deviceContext->CSSetShaderResources(0, 2, aSRiews);
+
+	ID3D11UnorderedAccessView* aUAViews[] = { NULL, NULL };
+	deviceContext->CSSetUnorderedAccessViews(0, 2, aUAViews, (UINT*)(&aUAViews));
+}
 
 void WaterSample::RunComputeShader(ID3D11ComputeShader* shader, Resource in0, Resource in1, Resource out0, Resource out1, int dx, int dy, int dz)
 {
@@ -163,6 +211,8 @@ void WaterSample::RunComputeShader(ID3D11ComputeShader* shader, Resource in0, Re
 
 	// Run compute shader
 	deviceContext->Dispatch(dx, dy, dz);
+
+	UnbindShaders();
 }
 
 void WaterSample::CreateVolumes()
