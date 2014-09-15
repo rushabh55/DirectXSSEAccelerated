@@ -19,7 +19,7 @@ class WaterSample
 public:
 	explicit	WaterSample(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	void Initialize();
-	void Update();
+	void Update(float mouseX, float mouseY);
 	void LoadShaders();
 	void UpdateShaders();
 	void Render();
