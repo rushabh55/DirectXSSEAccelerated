@@ -9,6 +9,9 @@ using namespace DirectX;
 using namespace std;
 
 #define DIMXYZ 200
+#define NULLres { NULL, NULL }
+#define SCR_WIDTH 800
+#define SCR_HEIGHT 600
 
 int DimX = DIMXYZ;
 int DimY = DIMXYZ;
@@ -22,7 +25,7 @@ public:
 	void Update(float mouseX, float mouseY);
 	void LoadShaders();
 	void UpdateShaders();
-	void Render();
+	void SetMousePosition(float x, float y);
 
 	typedef struct Resource
 	{
@@ -59,6 +62,9 @@ protected:
 	ID3D11ComputeShader*        g_pCSProject3D;
 
 
+	ID3D11ComputeShader*        g_pCSRender;
+	ID3D11ComputeShader*        g_pCSVectorToScalar;
+
 	ID3D11Buffer*		    				g_pcbWave3D;       // constant buffer
 
 	ID3D11SamplerState*         g_pSamplerStateLinear;
@@ -66,8 +72,36 @@ protected:
 	// render output
 	Resource                 pRenderOutput;
 
+	// Speed
+	ID3D11Texture3D*          pSpeedTex[3];
+	Resource pSpeed[3];
+
+	ID3D11Texture3D*          pSpeedSizeTex;
+	Resource pSpeedSize;
+	// Divergence
+	ID3D11Texture3D*          pDivergenceTex;
+	Resource pDivergence;
+
+	// Pressure
+	ID3D11Texture3D*          pPressureTex[2];
+	Resource pPressure[2];
+
+	void UnbindShaders();
+	void RunComputeShader(ID3D11ComputeShader* shader, Resource in0, Resource in1, Resource out0, Resource out1, int dx, int dy, int dz);
 
 private:
 	ID3D11Device* device;
 	ID3D11DeviceContext* deviceContext;
+	f32 mousePosX;
+	f32 mousePosY;
+	f32 viewSlice;
+	f32 mousePosXPrev;
+	f32 mousePosYPrev;
+	Bool drag;
+	void CreateVolumes();
+
+	// temp 2d slice for vector to scalar conversion
+	ID3D11Texture2D*           pSliceTex;
+	ID3D11UnorderedAccessView* pSliceUAV;
+	ID3D11ShaderResourceView*  pSliceSRV;
 };
