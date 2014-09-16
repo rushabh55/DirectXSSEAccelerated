@@ -18,7 +18,7 @@ using namespace std;
 class WaterSample
 {
 public:
-	explicit	WaterSample(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	explicit	WaterSample(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* g_pSwapChain);
 	void Initialize();
 	void UpdateShaders();
 	void SetMousePosition(float x, float y);
@@ -99,4 +99,5 @@ private:
 	ID3D11Texture2D*           pSliceTex;
 	ID3D11UnorderedAccessView* pSliceUAV;
 	ID3D11ShaderResourceView*  pSliceSRV;
+	IDXGISwapChain*            g_pSwapChain;
 };

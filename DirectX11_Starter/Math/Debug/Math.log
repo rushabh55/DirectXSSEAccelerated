@@ -1,9 +1,13 @@
-﻿Build started 9/15/2014 10:16:14 AM.
-     1>Project "D:\Scratch\EnginesClass\DirectX11_Starter\Math\Math.vcxproj" on node 2 (Build target(s)).
-     1>Lib:
+﻿Build started 9/16/2014 12:02:21 PM.
+     1>Project "D:\Scratch\EnginesClass\DirectX11_Starter\Math\Math.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Core\BasicTypes.cpp
+         BasicTypes.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"D:\Scratch\EnginesClass\DirectX11_Starter\Debug\Math.lib" /NOLOGO Debug\BasicTypes.obj
          Math.vcxproj -> D:\Scratch\EnginesClass\DirectX11_Starter\Debug\Math.lib
-     1>Done Building Project "D:\Scratch\EnginesClass\DirectX11_Starter\Math\Math.vcxproj" (Build target(s)).
+     1>Done Building Project "D:\Scratch\EnginesClass\DirectX11_Starter\Math\Math.vcxproj" (Rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.03
+Time Elapsed 00:00:00.57

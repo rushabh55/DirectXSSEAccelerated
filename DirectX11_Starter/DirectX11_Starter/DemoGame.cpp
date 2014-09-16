@@ -80,7 +80,7 @@ bool DemoGame::Init()
 	if( !DXGame::Init() )
 		return false;
 
-	m_pWaterSample = new WaterSample(device, deviceContext);
+	m_pWaterSample = new WaterSample(device, deviceContext, swapChain);
 
 	// Set up buffers and such
 	CreateGeometryBuffers();

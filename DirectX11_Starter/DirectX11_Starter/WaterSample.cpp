@@ -15,10 +15,11 @@ const i16 DimX = DIMXYZ;
 const i16 DimY = DIMXYZ;
 const i16 DimZ = DIMXYZ;
 
-WaterSample::WaterSample(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+WaterSample::WaterSample(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* g_pSwapChain)
 {
 	this->device = device;
 	this->deviceContext = deviceContext;
+	this->g_pSwapChain = g_pSwapChain;
 }
 
 void WaterSample::SetMousePosition(float x, float y)
@@ -112,7 +113,7 @@ void WaterSample::Initialize()
 	// set CS sampler
 	deviceContext->CSSetSamplers(0, 1, &g_pSamplerStateLinear);
 
-
+	
 }
 
 void WaterSample::UpdateShaders()
@@ -183,8 +184,8 @@ void WaterSample::UpdateShaders()
 	// render output
 	RunComputeShader(g_pCSRender, pSpeedSize, pPressure[1], pRenderOutput, NULLres, (SCR_WIDTH + 15) / 16, (SCR_HEIGHT + 15) / 16, 1);
 
-
 #pragma endregion
+	g_pSwapChain->Present(0, 0);
 }
 
 void WaterSample::UnbindShaders()
