@@ -78,7 +78,7 @@ f32 g_fSmoothlen = .012f;
 f32 g_fPressureStiffness = 200.0f;
 f32 g_fRestDensity = 1000.0f;
 f32 g_fParticleMass = 0.0002f;
-f32 g_fViscosity = 0.1f;
+f32 g_fViscosity = 1.1f;
 f32 g_fMaxAllowableTimeStep = 0.005f;
 f32 g_fParticleRenderSize = 0.01f;
 
@@ -112,10 +112,13 @@ enum eSimulationMode
 
 eSimulationMode g_eSimMode = SIM_MODE_GRID;
 
+
+
+XMFLOAT2A mousePosition;
 //--------------------------------------------------------------------------------------
 // Direct3D11 Global variables
 //--------------------------------------------------------------------------------------
-ID3D11ShaderResourceView* const     g_pNullSRV = nullptr;       // Helper to Clear SRVs
+ID3D11ShaderResourceView * const     g_pNullSRV = nullptr;       // Helper to Clear SRVs
 ID3D11UnorderedAccessView* const    g_pNullUAV = nullptr;       // Helper to Clear UAVs
 ID3D11Buffer* const                 g_pNullBuffer = nullptr;    // Helper to Clear Buffers
 u32                                g_iNullu32 = 0;         // Helper to Clear Buffers
@@ -129,6 +132,7 @@ ID3D11ComputeShader*                g_pBuildGridCS = nullptr;
 ID3D11ComputeShader*                g_pClearGridIndicesCS = nullptr;
 ID3D11ComputeShader*                g_pBuildGridIndicesCS = nullptr;
 ID3D11ComputeShader*                g_pRearrangeParticlesCS = nullptr;
+ID3D11ComputeShader*				g_pRepositionParticlesCS = nullptr;
 ID3D11ComputeShader*                g_pDensity_SimpleCS = nullptr;
 ID3D11ComputeShader*                g_pForce_SimpleCS = nullptr;
 ID3D11ComputeShader*                g_pDensity_SharedCS = nullptr;
@@ -169,10 +173,13 @@ ID3D11Buffer*                       g_pGridIndices = nullptr;
 ID3D11ShaderResourceView*           g_pGridIndicesSRV = nullptr;
 ID3D11UnorderedAccessView*          g_pGridIndicesUAV = nullptr;
 
+ID3D11Buffer*						g_pMousePositionBuffer = nullptr;
+ID3D11ShaderResourceView*			g_pMousePositionSRVs = nullptr;
+
 // Constant Buffer Layout
 #pragma warning(push)
 #pragma warning(disable:4324) // structure was padded due to __declspec(align())
-__declspec(align(16)) struct CBSimulationConstants
+__declspec(align(128)) struct CBSimulationConstants
 {
 	u32 iNumParticles;
 	f32 fTimeStep;
@@ -188,15 +195,16 @@ __declspec(align(16)) struct CBSimulationConstants
 	XMFLOAT4A vGridDim;
 
 	XMFLOAT3A vPlanes[4];
+	XMFLOAT2A mousePosition;
 };
 
-__declspec(align(16)) struct CBRenderConstants
+__declspec(align(128)) struct CBRenderConstants
 {
 	XMFLOAT4X4 mViewProjection;
 	f32 fParticleSize;
 };
 
-__declspec(align(16)) struct SortCB
+__declspec(align(128)) struct SortCB
 {
 	u32 iLevel;
 	u32 iLevelMask;
@@ -210,20 +218,6 @@ ID3D11Buffer*                       g_pcbSimulationConstants = nullptr;
 ID3D11Buffer*                       g_pcbRenderConstants = nullptr;
 ID3D11Buffer*                       g_pSortCB = nullptr;
 
-//--------------------------------------------------------------------------------------
-// UI control IDs
-//--------------------------------------------------------------------------------------
-#define IDC_TOGGLEFULLSCREEN      1
-#define IDC_TOGGLEREF             3
-#define IDC_CHANGEDEVICE          4
-
-#define IDC_RESETSIM              5
-#define IDC_NUMPARTICLES          6
-#define IDC_GRAVITY               7
-#define IDC_SIMMODE               8
-#define IDC_SIMSIMPLE             9
-#define IDC_SIMSHARED             10
-#define IDC_SIMGRID               11
 
 //--------------------------------------------------------------------------------------
 // Forward declarations 
@@ -314,7 +308,7 @@ void RenderText()
 	outs << DXUTGetDeviceStats();
 	outs << " FrameStats : ";
 	outs << DXUTGetFrameStats();
-	SetWindowText( GetActiveWindow(), outs.str().c_str());
+	SetWindowText( GetActiveWindow(), outs.str().c_str() );
 }
 
 
@@ -323,42 +317,10 @@ void RenderText()
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK MsgProc(HWND hWnd, u32 uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing,
 	void* pUserContext)
-{
-	
+{	
 	return 0;
 }
 
-
-//--------------------------------------------------------------------------------------
-// Handles the GUI events
-//--------------------------------------------------------------------------------------
-void CALLBACK OnGUIEvent(u32 nEvent, i32 nControlID, CDXUTControl* pControl, void* pUserContext)
-{
-	switch (nControlID)
-	{
-		// Standard DXUT controls
-	case IDC_TOGGLEFULLSCREEN:
-		DXUTToggleFullScreen(); break;
-	case IDC_TOGGLEREF:
-		DXUTToggleREF(); break;
-	case IDC_CHANGEDEVICE:
-		//g_D3DSettingsDlg.SetActive(!g_D3DSettingsDlg.IsActive()); break;
-	case IDC_RESETSIM:
-		CreateSimulationBuffers(DXUTGetD3D11Device()); break;
-	case IDC_NUMPARTICLES:
-		g_iNumParticles = PtrToUlong(((CDXUTComboBox*)pControl)->GetSelectedData());
-		CreateSimulationBuffers(DXUTGetD3D11Device());
-		break;
-	case IDC_GRAVITY:
-		g_vGravity = *(const XMFLOAT2A*)((CDXUTComboBox*)pControl)->GetSelectedData(); break;
-	case IDC_SIMSIMPLE:
-		g_eSimMode = SIM_MODE_SIMPLE; break;
-	case IDC_SIMSHARED:
-		g_eSimMode = SIM_MODE_SHARED; break;
-	case IDC_SIMGRID:
-		g_eSimMode = SIM_MODE_GRID; break;
-	}
-}
 
 
 //--------------------------------------------------------------------------------------
@@ -521,6 +483,7 @@ HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice)
 	DXUT_SetDebugName(g_pGridIndicesSRV, "Indices SRV");
 	DXUT_SetDebugName(g_pGridIndicesUAV, "Indices UAV");
 
+	
 	delete[] particles;
 
 	return S_OK;
@@ -617,6 +580,13 @@ HRESULT CALLBACK OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SURFAC
 	SAFE_RELEASE(pBlob);
 	DXUT_SetDebugName(g_pRearrangeParticlesCS, "RearrangeParticlesCS");
 
+	V_RETURN(DXUTCompileFromFile(L"FluidCS11.hlsl", nullptr, "RepositionCS", CSTarget, D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob));
+	V_RETURN(pd3dDevice->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pRepositionParticlesCS));
+	SAFE_RELEASE(pBlob);
+	DXUT_SetDebugName(g_pRepositionParticlesCS, "RepositionParticlesCS");
+
+
+
 	// Sort Shaders
 	V_RETURN(DXUTCompileFromFile(L"ComputeShaderSort11.hlsl", nullptr, "BitonicSort", CSTarget, D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob));
 	V_RETURN(pd3dDevice->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pSortBitonic));
@@ -638,10 +608,6 @@ HRESULT CALLBACK OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SURFAC
 	V_RETURN(CreateConstantBuffer< CBRenderConstants >(pd3dDevice, &g_pcbRenderConstants));
 
 	V_RETURN(CreateConstantBuffer< SortCB >(pd3dDevice, &g_pSortCB));
-
-	DXUT_SetDebugName(g_pcbSimulationConstants, "Simluation");
-	DXUT_SetDebugName(g_pcbRenderConstants, "Render");
-	DXUT_SetDebugName(g_pSortCB, "Sort");
 
 	return S_OK;
 }
@@ -806,7 +772,6 @@ void SimulateFluid_Grid(ID3D11DeviceContext* pd3dImmediateContext)
 	pd3dImmediateContext->CSSetConstantBuffers(0, 1, &g_pcbSimulationConstants);
 	pd3dImmediateContext->CSSetUnorderedAccessViews(0, 1, &g_pGridUAV, &UAVInitialCounts);
 	pd3dImmediateContext->CSSetShaderResources(0, 1, &g_pParticlesSRV);
-
 	// Build Grid
 	pd3dImmediateContext->CSSetShader(g_pBuildGridCS, nullptr, 0);
 	pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
@@ -896,8 +861,26 @@ void SimulateFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 	pData.vPlanes[1] = g_vPlanes[1];
 	pData.vPlanes[2] = g_vPlanes[2];
 	pData.vPlanes[3] = g_vPlanes[3];
+	pData.mousePosition = mousePosition;
 
 	pd3dImmediateContext->UpdateSubresource(g_pcbSimulationConstants, 0, nullptr, &pData, 0, 0);
+
+
+	if (GetAsyncKeyState('1'))
+	{
+		g_eSimMode = SIM_MODE_SIMPLE;
+	}
+	else
+		if (GetAsyncKeyState('2'))
+		{
+			g_eSimMode = SIM_MODE_SHARED;
+		}
+		else
+			if (GetAsyncKeyState('3'))
+			{
+				g_eSimMode = SIM_MODE_SIMPLE;
+			}
+
 
 	switch (g_eSimMode) {
 		// Simple N^2 Algorithm
@@ -926,10 +909,31 @@ void SimulateFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 }
 
 
+
+void Update(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+{
+	POINT point;
+	if (GetCursorPos((LPPOINT)&point))
+	{
+		std::stringstream ss;
+		ss << "x : ";
+		ss << point.x;
+		ss << "y : ";
+		ss << point.y;
+		ss << "\n";
+		OutputDebugStringA(ss.str().c_str());
+		mousePosition.x = point.x;
+		mousePosition.y = point.y;
+		deviceContext->CSSetConstantBuffers(0, 1, &g_pcbSimulationConstants);
+		deviceContext->CSSetShader(g_pRepositionParticlesCS, nullptr, 0);
+		deviceContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+	}
+}
+
 //--------------------------------------------------------------------------------------
 // GPU Fluid Rendering
 //--------------------------------------------------------------------------------------
-void RenderFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
+void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 {
 	// Simple orthographic projection to display the entire map
 	XMMATRIX mView = XMMatrixTranslation(-g_fMapWidth / 2.0f, -g_fMapHeight / 2.0f, 0);
@@ -960,6 +964,9 @@ void RenderFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 	pd3dImmediateContext->IASetVertexBuffers(0, 1, &g_pNullBuffer, &g_iNullu32, &g_iNullu32);
 	pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
+
+
+	Update(pd3dDevice, pd3dImmediateContext);
 	// Draw the mesh
 	pd3dImmediateContext->Draw(g_iNumParticles, 0);
 
@@ -979,16 +986,13 @@ void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 	auto pRTV = DXUTGetD3D11RenderTargetView();
 	pd3dImmediateContext->ClearRenderTargetView(pRTV, Colors::Black);
 	auto pDSV = DXUTGetD3D11DepthStencilView();
-	pd3dImmediateContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH, 1.0, 0);
+	pd3dImmediateContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH, 1.0, 5);
 
 	SimulateFluid(pd3dImmediateContext, fElapsedTime);
 
-	RenderFluid(pd3dImmediateContext, fElapsedTime);
+	RenderFluid(pd3dDevice, pd3dImmediateContext, fElapsedTime);
 
-	// Render the HUD
-	DXUT_BeginPerfEvent(DXUT_PERFEVENTCOLOR, L"HUD / Stats");	
-	RenderText();
-	DXUT_EndPerfEvent();
+	RenderText();	
 }
 
 

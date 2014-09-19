@@ -47,6 +47,7 @@ cbuffer cbSimulationConstants : register( b0 )
     float4 g_vGravity;
     float4 g_vGridDim;
     float3 g_vPlanes[4];
+	float2 g_mousePosition; 
 };
 
 //--------------------------------------------------------------------------------------
@@ -72,8 +73,6 @@ StructuredBuffer<unsigned int> GridRO : register( t3 );
 
 RWStructuredBuffer<uint2> GridIndicesRW : register( u0 );
 StructuredBuffer<uint2> GridIndicesRO : register( t4 );
-
-
 //--------------------------------------------------------------------------------------
 // Grid Construction
 //--------------------------------------------------------------------------------------
@@ -117,7 +116,7 @@ unsigned int GridGetValue(unsigned int keyvaluepair)
 // Build Grid
 //--------------------------------------------------------------------------------------
 
-[numthreads(SIMULATION_BLOCK_SIZE, 1, 1)]
+[numthreads(256, 1, 1)]
 void BuildGridCS( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint3 GTid : SV_GroupThreadID, uint GI : SV_GroupIndex )
 {
     const unsigned int P_ID = DTid.x; // Particle ID to operate on
@@ -126,6 +125,8 @@ void BuildGridCS( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint
     float2 grid_xy = GridCalculateCell( position );
     
     GridRW[P_ID] = GridConstuctKeyValuePair((uint2)grid_xy, P_ID);
+
+	printf("done");
 }
 
 
@@ -524,4 +525,16 @@ void IntegrateCS( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint
     // Update
     ParticlesRW[P_ID].position = position;
     ParticlesRW[P_ID].velocity = velocity;
+}
+
+
+[numthreads(SIMULATION_BLOCK_SIZE, 1, 1)]
+void RepositionCS(uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint3 GTid : SV_GroupThreadID)
+{
+	const unsigned int P_ID = DTid.x;
+
+	float2 position = g_mousePosition;
+	ParticlesRW[P_ID].position = g_mousePosition;
+	ParticlesRW[P_ID].velocity = float2(0, 0);
+	//ParticlesForcesRW[p_ID].acceleration = float2(0, 0);
 }
