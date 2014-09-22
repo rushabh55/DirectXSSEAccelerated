@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="FluidCS11.cpp" />
     <CLInclude Include="WaitDlg.h" />
+    <ClCompile Include="SSEDataTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ComputeShaderSort11.hlsl">

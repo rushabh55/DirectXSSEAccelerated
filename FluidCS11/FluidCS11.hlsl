@@ -125,8 +125,6 @@ void BuildGridCS( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint
     float2 grid_xy = GridCalculateCell( position );
     
     GridRW[P_ID] = GridConstuctKeyValuePair((uint2)grid_xy, P_ID);
-
-	printf("done");
 }
 
 

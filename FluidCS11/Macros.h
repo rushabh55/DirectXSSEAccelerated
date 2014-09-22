@@ -19,7 +19,12 @@
     ((DWORD)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
 #endif
 
-
+#ifndef ASSERT
+#define ASSERT( x ) { if ( !x ) throw 1; }
+#endif
+#ifndef ASSERTMSG
+#define ASSERTMSG( x , y ) { if ( !x ) throw y; }
+#endif
 
 typedef char i8;
 typedef short i16;

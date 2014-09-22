@@ -23,6 +23,7 @@
 #include "WaitDlg.h"
 #include <sstream> 
 #include <algorithm>
+#include "SSEDataTypes.h"
 
 #pragma warning( disable : 4100 )
 
@@ -68,8 +69,8 @@ const u32 TRANSPOSE_BLOCK_SIZE = 16;
 // For this sample, only use power-of-2 numbers >= 8K and <= 64K
 // The algorithm can be extended to support any number of particles
 // But to keep the sample simple, we do not implement boundary conditions to handle it
-const u64 NUM_PARTICLES_64K = 64 * 1024;
-u64 g_iNumParticles = NUM_PARTICLES_64K;
+const u32 NUM_PARTICLES_64K = 64 * 1024;
+u32 g_iNumParticles = NUM_PARTICLES_64K;
 
 // Particle Properties
 // These will control how the fluid behaves
@@ -78,7 +79,7 @@ f32 g_fSmoothlen = .012f;
 f32 g_fPressureStiffness = 200.0f;
 f32 g_fRestDensity = 1000.0f;
 f32 g_fParticleMass = 0.0002f;
-f32 g_fViscosity = 1.1f;
+f32 g_fViscosity = 5.1f;
 f32 g_fMaxAllowableTimeStep = 0.005f;
 f32 g_fParticleRenderSize = 0.01f;
 
@@ -132,7 +133,7 @@ ID3D11ComputeShader*                g_pBuildGridCS = nullptr;
 ID3D11ComputeShader*                g_pClearGridIndicesCS = nullptr;
 ID3D11ComputeShader*                g_pBuildGridIndicesCS = nullptr;
 ID3D11ComputeShader*                g_pRearrangeParticlesCS = nullptr;
-ID3D11ComputeShader*				g_pRepositionParticlesCS = nullptr;
+//ID3D11ComputeShader*				g_pRepositionParticlesCS = nullptr;
 ID3D11ComputeShader*                g_pDensity_SimpleCS = nullptr;
 ID3D11ComputeShader*                g_pForce_SimpleCS = nullptr;
 ID3D11ComputeShader*                g_pDensity_SharedCS = nullptr;
@@ -156,7 +157,7 @@ ID3D11UnorderedAccessView*          g_pSortedParticlesUAV = nullptr;
 ID3D11Buffer*                       g_pParticleDensity = nullptr;
 ID3D11ShaderResourceView*           g_pParticleDensitySRV = nullptr;
 ID3D11UnorderedAccessView*          g_pParticleDensityUAV = nullptr;
-
+ 
 ID3D11Buffer*                       g_pParticleForces = nullptr;
 ID3D11ShaderResourceView*           g_pParticleForcesSRV = nullptr;
 ID3D11UnorderedAccessView*          g_pParticleForcesUAV = nullptr;
@@ -172,10 +173,10 @@ ID3D11UnorderedAccessView*          g_pGridPingPongUAV = nullptr;
 ID3D11Buffer*                       g_pGridIndices = nullptr;
 ID3D11ShaderResourceView*           g_pGridIndicesSRV = nullptr;
 ID3D11UnorderedAccessView*          g_pGridIndicesUAV = nullptr;
-
-ID3D11UnorderedAccessView*			m_pRepositionUAVs = nullptr;
-ID3D11ShaderResourceView*			m_pRepositionSRVs = nullptr;
-ID3D11Buffer*						m_pRepositionBuffers = nullptr;
+//
+//ID3D11UnorderedAccessView*			m_pRepositionUAVs = nullptr;
+//ID3D11ShaderResourceView*			m_pRepositionSRVs = nullptr;
+//ID3D11Buffer*						m_pRepositionBuffers = nullptr;
 
 // Constant Buffer Layout
 #pragma warning(push)
@@ -484,10 +485,10 @@ HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice)
 	DXUT_SetDebugName(g_pGridIndicesSRV, "Indices SRV");
 	DXUT_SetDebugName(g_pGridIndicesUAV, "Indices UAV");
 
-	V_RETURN(CreateStructuredBuffer < Particle >(pd3dDevice, g_iNumParticles, &m_pRepositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
-	DXUT_SetDebugName(m_pRepositionBuffers, "reposition buffers");
-	DXUT_SetDebugName(m_pRepositionSRVs, "reposition SRV");
-	DXUT_SetDebugName(m_pRepositionUAVs, "reposition UAV");
+	//V_RETURN(CreateStructuredBuffer < Particle >(pd3dDevice, g_iNumParticles, &m_pRepositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
+	//DXUT_SetDebugName(m_pRepositionBuffers, "reposition buffers");
+	//DXUT_SetDebugName(m_pRepositionSRVs, "reposition SRV");
+	//DXUT_SetDebugName(m_pRepositionUAVs, "reposition UAV");
 
 	delete[] particles;
 
@@ -586,9 +587,9 @@ HRESULT CALLBACK OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SURFAC
 	DXUT_SetDebugName(g_pRearrangeParticlesCS, "RearrangeParticlesCS");
 
 	V_RETURN(DXUTCompileFromFile(L"FluidCS11.hlsl", nullptr, "RepositionCS", CSTarget, D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob));
-	V_RETURN(pd3dDevice->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pRepositionParticlesCS));
-	SAFE_RELEASE(pBlob);
-	DXUT_SetDebugName(g_pRepositionParticlesCS, "RepositionParticlesCS");
+	//V_RETURN(pd3dDevice->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pRepositionParticlesCS));
+	//SAFE_RELEASE(pBlob);
+	//DXUT_SetDebugName(g_pRepositionParticlesCS, "RepositionParticlesCS");
 
 
 
@@ -928,13 +929,13 @@ void Update(ID3D11Device* device, ID3D11DeviceContext* deviceContext, f32 fElaps
 	OutputDebugStringA(ss.str().c_str());
 	mousePosition.x = point.x;
 	mousePosition.y = point.y;
-
-	deviceContext->CSSetShaderResources(0, 1, &m_pRepositionSRVs);
-	deviceContext->CSSetUnorderedAccessViews(0, 1, &m_pRepositionUAVs, &UAVInitialCounts);
-	deviceContext->CSSetConstantBuffers(0, 1, &g_pcbSimulationConstants);
-	deviceContext->CSSetShader(g_pRepositionParticlesCS, nullptr, 0);
-	deviceContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
-	deviceContext->Flush();
+//
+//	deviceContext->CSSetShaderResources(0, 1, &m_pRepositionSRVs);
+////	deviceContext->CSSetUnorderedAccessViews(0, 1, &m_pRepositionUAVs, &UAVInitialCounts);
+//	deviceContext->CSSetConstantBuffers(0, 1, &g_pcbSimulationConstants);
+//	deviceContext->CSSetShader(g_pRepositionParticlesCS, nullptr, 0);
+//	deviceContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+//	deviceContext->Flush();
 }
 
 //--------------------------------------------------------------------------------------
@@ -1068,5 +1069,5 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
 	SAFE_RELEASE(g_pGridIndicesUAV);
 	SAFE_RELEASE(g_pGridIndices);
 
-	SAFE_RELEASE(g_pRepositionParticlesCS);
+	//SAFE_RELEASE(g_pRepositionParticlesCS);
 }
