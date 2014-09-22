@@ -376,7 +376,7 @@ void ForceCS_Simple( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, u
         }
     }
     
-    ParticlesForcesRW[P_ID].acceleration = acceleration / P_density;
+	ParticlesForcesRW[P_ID].acceleration = 0;/* acceleration / P_density;*/
 }
 
 
@@ -437,7 +437,7 @@ void ForceCS_Shared( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, u
         GroupMemoryBarrierWithGroupSync();
     }
     
-    ParticlesForcesRW[P_ID].acceleration = acceleration / P_density;
+	ParticlesForcesRW[P_ID].acceleration = 0;/* acceleration / P_density;*/
 }
 
 
@@ -534,7 +534,6 @@ void RepositionCS(uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint
 	const unsigned int P_ID = DTid.x;
 
 	float2 position = g_mousePosition;
-	ParticlesRW[P_ID].position = g_mousePosition;
-	ParticlesRW[P_ID].velocity = float2(0, 0);
-	//ParticlesForcesRW[p_ID].acceleration = float2(0, 0);
+	ParticlesRW[P_ID].position = 0;
+	ParticlesRW[P_ID].velocity = 0; 
 }

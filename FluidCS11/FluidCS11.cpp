@@ -173,13 +173,14 @@ ID3D11Buffer*                       g_pGridIndices = nullptr;
 ID3D11ShaderResourceView*           g_pGridIndicesSRV = nullptr;
 ID3D11UnorderedAccessView*          g_pGridIndicesUAV = nullptr;
 
-ID3D11Buffer*						g_pMousePositionBuffer = nullptr;
-ID3D11ShaderResourceView*			g_pMousePositionSRVs = nullptr;
+ID3D11UnorderedAccessView*			m_pRepositionUAVs = nullptr;
+ID3D11ShaderResourceView*			m_pRepositionSRVs = nullptr;
+ID3D11Buffer*						m_pRepositionBuffers = nullptr;
 
 // Constant Buffer Layout
 #pragma warning(push)
 #pragma warning(disable:4324) // structure was padded due to __declspec(align())
-__declspec(align(128)) struct CBSimulationConstants
+__declspec(align(16)) struct CBSimulationConstants
 {
 	u32 iNumParticles;
 	f32 fTimeStep;
@@ -198,13 +199,13 @@ __declspec(align(128)) struct CBSimulationConstants
 	XMFLOAT2A mousePosition;
 };
 
-__declspec(align(128)) struct CBRenderConstants
+__declspec(align(16)) struct CBRenderConstants
 {
 	XMFLOAT4X4 mViewProjection;
 	f32 fParticleSize;
 };
 
-__declspec(align(128)) struct SortCB
+__declspec(align(16)) struct SortCB
 {
 	u32 iLevel;
 	u32 iLevelMask;
@@ -483,7 +484,11 @@ HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice)
 	DXUT_SetDebugName(g_pGridIndicesSRV, "Indices SRV");
 	DXUT_SetDebugName(g_pGridIndicesUAV, "Indices UAV");
 
-	
+	V_RETURN(CreateStructuredBuffer < Particle >(pd3dDevice, g_iNumParticles, &m_pRepositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
+	DXUT_SetDebugName(m_pRepositionBuffers, "reposition buffers");
+	DXUT_SetDebugName(m_pRepositionSRVs, "reposition SRV");
+	DXUT_SetDebugName(m_pRepositionUAVs, "reposition UAV");
+
 	delete[] particles;
 
 	return S_OK;
@@ -909,25 +914,27 @@ void SimulateFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 }
 
 
-
-void Update(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+void Update(ID3D11Device* device, ID3D11DeviceContext* deviceContext, f32 fElapsedTime)
 {
 	POINT point;
-	if (GetCursorPos((LPPOINT)&point))
-	{
-		std::stringstream ss;
-		ss << "x : ";
-		ss << point.x;
-		ss << "y : ";
-		ss << point.y;
-		ss << "\n";
-		OutputDebugStringA(ss.str().c_str());
-		mousePosition.x = point.x;
-		mousePosition.y = point.y;
-		deviceContext->CSSetConstantBuffers(0, 1, &g_pcbSimulationConstants);
-		deviceContext->CSSetShader(g_pRepositionParticlesCS, nullptr, 0);
-		deviceContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
-	}
+	GetCursorPos((LPPOINT)&point);
+	
+	std::stringstream ss;
+	ss << "x : ";
+	ss << point.x;
+	ss << "y : ";
+	ss << point.y;
+	ss << "\n";
+	OutputDebugStringA(ss.str().c_str());
+	mousePosition.x = point.x;
+	mousePosition.y = point.y;
+
+	deviceContext->CSSetShaderResources(0, 1, &m_pRepositionSRVs);
+	deviceContext->CSSetUnorderedAccessViews(0, 1, &m_pRepositionUAVs, &UAVInitialCounts);
+	deviceContext->CSSetConstantBuffers(0, 1, &g_pcbSimulationConstants);
+	deviceContext->CSSetShader(g_pRepositionParticlesCS, nullptr, 0);
+	deviceContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+	deviceContext->Flush();
 }
 
 //--------------------------------------------------------------------------------------
@@ -961,12 +968,12 @@ void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateCon
 	// Setup the particles buffer and IA
 	pd3dImmediateContext->VSSetShaderResources(0, 1, &g_pParticlesSRV);
 	pd3dImmediateContext->VSSetShaderResources(1, 1, &g_pParticleDensitySRV);
-	pd3dImmediateContext->IASetVertexBuffers(0, 1, &g_pNullBuffer, &g_iNullu32, &g_iNullu32);
-	pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	pd3dImmediateContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 
 
-	Update(pd3dDevice, pd3dImmediateContext);
+
+	Update(pd3dDevice, pd3dImmediateContext, fElapsedTime);
 	// Draw the mesh
 	pd3dImmediateContext->Draw(g_iNumParticles, 0);
 
@@ -1060,4 +1067,6 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
 	SAFE_RELEASE(g_pGridIndicesSRV);
 	SAFE_RELEASE(g_pGridIndicesUAV);
 	SAFE_RELEASE(g_pGridIndices);
+
+	SAFE_RELEASE(g_pRepositionParticlesCS);
 }
