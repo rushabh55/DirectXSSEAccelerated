@@ -374,7 +374,7 @@ void ForceCS_Simple( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, u
         }
     }
     
-	ParticlesForcesRW[P_ID].acceleration = 0;/* acceleration / P_density;*/
+	ParticlesForcesRW[P_ID].acceleration = acceleration / P_density;
 }
 
 
@@ -455,7 +455,8 @@ void ForceCS_Grid( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uin
     
     const float h_sq = g_fSmoothlen * g_fSmoothlen;
     
-    float2 acceleration = float2(0, 0);
+	float2 acceleration = float2(0, 0);
+
     
     // Calculate the acceleration based on neighbors from the 8 adjacent cells + current cell
     int2 G_XY = (int2)GridCalculateCell( P_position );
@@ -488,7 +489,19 @@ void ForceCS_Grid( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uin
         }
     }
 
-    ParticlesForcesRW[P_ID].acceleration = acceleration / P_density;
+	float2 calculatedAcc = acceleration / P_density;
+	float2 mouseAcc = g_mousePosition;
+	float2 diff = float2(0, 0);
+	if ( mouseAcc.x != 0)
+		diff = calculatedAcc - ( mouseAcc );
+	else
+	{
+		diff = calculatedAcc;
+	}
+		
+
+
+    ParticlesForcesRW[P_ID].acceleration = diff;
 }
 
 
@@ -532,6 +545,4 @@ void RepositionCS(uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint
 	const unsigned int P_ID = DTid.x;
 
 	float2 position = g_mousePosition;
-	ParticlesRW[P_ID].position = 0;
-	ParticlesRW[P_ID].velocity = 0; 
 }

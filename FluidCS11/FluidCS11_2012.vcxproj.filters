@@ -9,9 +9,6 @@
       <UniqueIdentifier>{2c3d4c8c-5d1a-459a-a05a-a4e4b608a44e}</UniqueIdentifier>
       <Extensions>fx;fxh;hlsl</Extensions>
     </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{ad259f62-bd68-49b5-a9ba-98aaf75dd266}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\DXUT11\Optional\directx.ico">
@@ -22,6 +19,7 @@
     <ClCompile Include="FluidCS11.cpp" />
     <CLInclude Include="WaitDlg.h" />
     <ClCompile Include="SSEDataTypes.h" />
+    <ClCompile Include="MathX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ComputeShaderSort11.hlsl">
@@ -42,6 +40,7 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
     <ClInclude Include="Macros.h" />
+    <ClInclude Include="MathX.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

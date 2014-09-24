@@ -1,20 +1,4 @@
-//--------------------------------------------------------------------------------------
-// File: FluidCS11.cpp
-//
-// Copyright (c) Microsoft Corporation. All rights reserved.
-//--------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------------
-// Smoothed Particle Hydrodynamics Algorithm Based Upon:
-// Particle-Based Fluid Simulation for Interactive Applications
-// Matthias Müller
-//--------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------------
-// Optimized Grid Algorithm Based Upon:
-// Broad-Phase Collision Detection with CUDA
-// Scott Le Grand
-//--------------------------------------------------------------------------------------
+#include "MathX.h"
 #include "Macros.h"
 #include "DXUT.h"
 #include "DXUTsettingsDlg.h"
@@ -23,12 +7,10 @@
 #include "WaitDlg.h"
 #include <sstream> 
 #include <algorithm>
-#include "SSEDataTypes.h"
 
 #pragma warning( disable : 4100 )
-
 using namespace DirectX;
-
+using namespace Math;
 struct Particle
 {
 	XMFLOAT2 vPosition;
@@ -74,29 +56,34 @@ u32 g_iNumParticles = NUM_PARTICLES_64K;
 
 // Particle Properties
 // These will control how the fluid behaves
-f32 g_fInitialParticleSpacing = 0.0045f;
-f32 g_fSmoothlen = .012f;
-f32 g_fPressureStiffness = 200.0f;
-f32 g_fRestDensity = 1000.0f;
-f32 g_fParticleMass = 0.0002f;
-f32 g_fViscosity = 5.1f;
-f32 g_fMaxAllowableTimeStep = 0.005f;
-f32 g_fParticleRenderSize = 0.01f;
+
+
+
+static const f32 g_fInitialParticleSpacing = 0.0045f;
+static const f32 g_fSmoothlen = .012f;
+static const f32 g_fPressureStiffness = 200.0f;
+static const f32 g_fRestDensity = 1024.0f;
+const f32 g_fParticleMass = 0.0002f;
+const f32 g_fViscosity = 5.1f;
+const f32 g_fMaxAllowableTimeStep = 0.05f;
+const f32 g_fParticleRenderSize = 0.01f;
+
+XVector4 vars1 = Math::XVector4(g_fParticleMass, g_fSmoothlen, g_fPressureStiffness, g_fRestDensity);
 
 // Gravity Directions
-const XMFLOAT2A GRAVITY_DOWN(0, -1.0f);
+static const XMFLOAT2A GRAVITY_DOWN(0, -1.0f);
 XMFLOAT2A g_vGravity = GRAVITY_DOWN;
 
 // Map Size
 // These values should not be larger than 256 * fSmoothlen
 // Since the map must be divided up into fSmoothlen sized grid cells
 // And the grid cell is used as a 16-bit sort key, 8-bits for x and y
-f32 g_fMapHeight = 1.2f;
-f32 g_fMapWidth = (4.0f / 3.0f) * g_fMapHeight;
+static const f32 g_fMapHeight = 1.2f;
+static const f32 g_fMapWidth = (4.0f / 3.0f) * g_fMapHeight;
 
 // Map Wall Collision Planes
-f32 g_fWallStiffness = 3000.0f;
-XMFLOAT3A g_vPlanes[4] = {
+static const f32 g_fWallStiffness = 3000.0f;
+static const XMFLOAT3A g_vPlanes[4] = {
 	XMFLOAT3A(1, 0, 0),
 	XMFLOAT3A(0, 1, 0),
 	XMFLOAT3A(-1, 0, g_fMapWidth),
@@ -133,7 +120,7 @@ ID3D11ComputeShader*                g_pBuildGridCS = nullptr;
 ID3D11ComputeShader*                g_pClearGridIndicesCS = nullptr;
 ID3D11ComputeShader*                g_pBuildGridIndicesCS = nullptr;
 ID3D11ComputeShader*                g_pRearrangeParticlesCS = nullptr;
-//ID3D11ComputeShader*				g_pRepositionParticlesCS = nullptr;
+ID3D11ComputeShader*				g_pRepositionParticlesCS = nullptr;
 ID3D11ComputeShader*                g_pDensity_SimpleCS = nullptr;
 ID3D11ComputeShader*                g_pForce_SimpleCS = nullptr;
 ID3D11ComputeShader*                g_pDensity_SharedCS = nullptr;
@@ -157,7 +144,7 @@ ID3D11UnorderedAccessView*          g_pSortedParticlesUAV = nullptr;
 ID3D11Buffer*                       g_pParticleDensity = nullptr;
 ID3D11ShaderResourceView*           g_pParticleDensitySRV = nullptr;
 ID3D11UnorderedAccessView*          g_pParticleDensityUAV = nullptr;
- 
+
 ID3D11Buffer*                       g_pParticleForces = nullptr;
 ID3D11ShaderResourceView*           g_pParticleForcesSRV = nullptr;
 ID3D11UnorderedAccessView*          g_pParticleForcesUAV = nullptr;
@@ -173,21 +160,25 @@ ID3D11UnorderedAccessView*          g_pGridPingPongUAV = nullptr;
 ID3D11Buffer*                       g_pGridIndices = nullptr;
 ID3D11ShaderResourceView*           g_pGridIndicesSRV = nullptr;
 ID3D11UnorderedAccessView*          g_pGridIndicesUAV = nullptr;
-//
-//ID3D11UnorderedAccessView*			m_pRepositionUAVs = nullptr;
-//ID3D11ShaderResourceView*			m_pRepositionSRVs = nullptr;
-//ID3D11Buffer*						m_pRepositionBuffers = nullptr;
+
+ID3D11UnorderedAccessView*			m_pRepositionUAVs = nullptr;
+ID3D11ShaderResourceView*			m_pRepositionSRVs = nullptr;
+ID3D11Buffer*						m_pRepositionBuffers = nullptr;
+ID3D11Buffer*						m_debugRespositionBuffers = nullptr;
 
 // Constant Buffer Layout
 #pragma warning(push)
 #pragma warning(disable:4324) // structure was padded due to __declspec(align())
-__declspec(align(16)) struct CBSimulationConstants
+ struct CBSimulationConstants
 {
+	/*Math::XVector4(g_fInitialParticleSpacing, g_fSmoothlen, g_fPressureStiffness, g_fRestDensity);*/
 	u32 iNumParticles;
 	f32 fTimeStep;
+
 	f32 fSmoothlen;
 	f32 fPressureStiffness;
 	f32 fRestDensity;
+	
 	f32 fDensityCoef;
 	f32 fGradPressureCoef;
 	f32 fLapViscosityCoef;
@@ -200,13 +191,14 @@ __declspec(align(16)) struct CBSimulationConstants
 	XMFLOAT2A mousePosition;
 };
 
-__declspec(align(16)) struct CBRenderConstants
+struct CBRenderConstants
 {
 	XMFLOAT4X4 mViewProjection;
 	f32 fParticleSize;
+	char padding[12];
 };
 
-__declspec(align(16)) struct SortCB
+struct SortCB
 {
 	u32 iLevel;
 	u32 iLevelMask;
@@ -273,7 +265,7 @@ i32 WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	DXUTInit(true, true); // Parse the command line, show msgboxes on error, and an extra cmd line param to force REF for now
 	DXUTSetCursorSettings(true, true); // Show the cursor and clip it when in full screen
 	DXUTCreateWindow(L"FluidCS11");
-	DXUTCreateDevice(D3D_FEATURE_LEVEL_10_0, true, 1024, 768);
+	DXUTCreateDevice(D3D_FEATURE_LEVEL_10_0, true, 1920, 1080);
 	DXUTMainLoop(); // Enter into the DXUT render loop
 
 	return DXUTGetExitCode();
@@ -310,7 +302,7 @@ void RenderText()
 	outs << DXUTGetDeviceStats();
 	outs << " FrameStats : ";
 	outs << DXUTGetFrameStats();
-	SetWindowText( GetActiveWindow(), outs.str().c_str() );
+	SetWindowText(GetActiveWindow(), outs.str().c_str());
 }
 
 
@@ -319,7 +311,24 @@ void RenderText()
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK MsgProc(HWND hWnd, u32 uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing,
 	void* pUserContext)
-{	
+{
+	if (uMsg == WM_LBUTTONDOWN)
+	{
+		POINT point;
+		GetCursorPos((LPPOINT)&point);
+		mousePosition.x = point.x;
+		mousePosition.y = point.y;
+		LPRECT rect, rect2;
+		//GetWindowRect(hWnd, rect2);
+		GetClientRect(hWnd, rect);
+		return 1;
+	}
+	else if ( WM_LBUTTONUP )
+	{
+		mousePosition.x = 0;
+		mousePosition.y = 0;
+		return 1;
+	}
 	return 0;
 }
 
@@ -398,7 +407,7 @@ HRESULT CreateStructuredBuffer(ID3D11Device* pd3dDevice, u32 iNumElements, ID3D1
 
 	return hr;
 }
-
+Particle* particles;
 
 //--------------------------------------------------------------------------------------
 // Create the buffers used for the simulation data
@@ -439,7 +448,7 @@ HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice)
 	// Create the initial particle positions
 	// This is only used to populate the GPU buffers on creation
 	const u32 iStartingWidth = (u32)sqrt((FLOAT)g_iNumParticles);
-	Particle* particles = new Particle[g_iNumParticles];
+	particles = new Particle[g_iNumParticles];
 	ZeroMemory(particles, sizeof(Particle) * g_iNumParticles);
 	for (u32 i = 0; i < g_iNumParticles; i++)
 	{
@@ -485,11 +494,12 @@ HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice)
 	DXUT_SetDebugName(g_pGridIndicesSRV, "Indices SRV");
 	DXUT_SetDebugName(g_pGridIndicesUAV, "Indices UAV");
 
-	//V_RETURN(CreateStructuredBuffer < Particle >(pd3dDevice, g_iNumParticles, &m_pRepositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
-	//DXUT_SetDebugName(m_pRepositionBuffers, "reposition buffers");
-	//DXUT_SetDebugName(m_pRepositionSRVs, "reposition SRV");
-	//DXUT_SetDebugName(m_pRepositionUAVs, "reposition UAV");
-
+	V_RETURN(CreateStructuredBuffer < Particle >(pd3dDevice, g_iNumParticles, &m_pRepositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
+	V_RETURN(CreateStructuredBuffer < Particle>(pd3dDevice, g_iNumParticles, &m_debugRespositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
+	DXUT_SetDebugName(m_pRepositionBuffers, "reposition buffers");
+	DXUT_SetDebugName(m_pRepositionSRVs, "reposition SRV");
+	DXUT_SetDebugName(m_pRepositionUAVs, "reposition UAV");
+	DXUT_SetDebugName(m_debugRespositionBuffers, "Debug buffers ");
 	delete[] particles;
 
 	return S_OK;
@@ -587,9 +597,9 @@ HRESULT CALLBACK OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SURFAC
 	DXUT_SetDebugName(g_pRearrangeParticlesCS, "RearrangeParticlesCS");
 
 	V_RETURN(DXUTCompileFromFile(L"FluidCS11.hlsl", nullptr, "RepositionCS", CSTarget, D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob));
-	//V_RETURN(pd3dDevice->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pRepositionParticlesCS));
-	//SAFE_RELEASE(pBlob);
-	//DXUT_SetDebugName(g_pRepositionParticlesCS, "RepositionParticlesCS");
+	V_RETURN(pd3dDevice->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pRepositionParticlesCS));
+	SAFE_RELEASE(pBlob);
+	DXUT_SetDebugName(g_pRepositionParticlesCS, "RepositionParticlesCS");
 
 
 
@@ -851,7 +861,7 @@ void SimulateFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 	pData.fDensityCoef = g_fParticleMass * 315.0f / (64.0f * XM_PI * pow(g_fSmoothlen, 9));
 	pData.fGradPressureCoef = g_fParticleMass * -45.0f / (XM_PI * pow(g_fSmoothlen, 6));
 	pData.fLapViscosityCoef = g_fParticleMass * g_fViscosity * 45.0f / (XM_PI * pow(g_fSmoothlen, 6));
-
+	/*Math::XVector4(g_fInitialParticleSpacing, g_fSmoothlen, g_fPressureStiffness, g_fRestDensity);*/
 	pData.vGravity = g_vGravity;
 
 	// Cells are spaced the size of the smoothing length search radius
@@ -879,12 +889,12 @@ void SimulateFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 	else
 		if (GetAsyncKeyState('2'))
 		{
-			g_eSimMode = SIM_MODE_SHARED;
+		g_eSimMode = SIM_MODE_SHARED;
 		}
 		else
 			if (GetAsyncKeyState('3'))
 			{
-				g_eSimMode = SIM_MODE_SIMPLE;
+		g_eSimMode = SIM_MODE_SIMPLE;
 			}
 
 
@@ -917,25 +927,15 @@ void SimulateFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 
 void Update(ID3D11Device* device, ID3D11DeviceContext* deviceContext, f32 fElapsedTime)
 {
-	POINT point;
-	GetCursorPos((LPPOINT)&point);
-	
-	std::stringstream ss;
+
+	/*std::stringstream ss;
 	ss << "x : ";
 	ss << point.x;
 	ss << "y : ";
 	ss << point.y;
-	ss << "\n";
-	OutputDebugStringA(ss.str().c_str());
-	mousePosition.x = point.x;
-	mousePosition.y = point.y;
-//
-//	deviceContext->CSSetShaderResources(0, 1, &m_pRepositionSRVs);
-////	deviceContext->CSSetUnorderedAccessViews(0, 1, &m_pRepositionUAVs, &UAVInitialCounts);
-//	deviceContext->CSSetConstantBuffers(0, 1, &g_pcbSimulationConstants);
-//	deviceContext->CSSetShader(g_pRepositionParticlesCS, nullptr, 0);
-//	deviceContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
-//	deviceContext->Flush();
+	ss << "\n";*/
+	//OutputDebugStringA(ss.str().c_str());
+
 }
 
 //--------------------------------------------------------------------------------------
@@ -949,12 +949,13 @@ void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateCon
 	XMMATRIX mViewProjection = mView * mProjection;
 
 	// Update Constants
-	CBRenderConstants pData = {};
+	CBRenderConstants pData;
 
 	XMStoreFloat4x4(&pData.mViewProjection, XMMatrixTranspose(mViewProjection));
 	pData.fParticleSize = g_fParticleRenderSize;
 
 	pd3dImmediateContext->UpdateSubresource(g_pcbRenderConstants, 0, nullptr, &pData, 0, 0);
+	Update(pd3dDevice, pd3dImmediateContext, fElapsedTime);
 
 	// Set the shaders
 	pd3dImmediateContext->VSSetShader(g_pParticleVS, nullptr, 0);
@@ -971,10 +972,9 @@ void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateCon
 	pd3dImmediateContext->VSSetShaderResources(1, 1, &g_pParticleDensitySRV);
 	pd3dImmediateContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 
+	//pd3dImmediateContext->DrawInstanced(g_iNumParticles, 50, 0, 100);
 
 
-
-	Update(pd3dDevice, pd3dImmediateContext, fElapsedTime);
 	// Draw the mesh
 	pd3dImmediateContext->Draw(g_iNumParticles, 0);
 
@@ -994,13 +994,13 @@ void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 	auto pRTV = DXUTGetD3D11RenderTargetView();
 	pd3dImmediateContext->ClearRenderTargetView(pRTV, Colors::Black);
 	auto pDSV = DXUTGetD3D11DepthStencilView();
-	pd3dImmediateContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH, 1.0, 5);
+	pd3dImmediateContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH, 1.0, .05);
 
 	SimulateFluid(pd3dImmediateContext, fElapsedTime);
 
 	RenderFluid(pd3dDevice, pd3dImmediateContext, fElapsedTime);
 
-	RenderText();	
+	RenderText();
 }
 
 
@@ -1016,7 +1016,7 @@ void CALLBACK OnD3D11ReleasingSwapChain(void* pUserContext)
 // Release D3D11 resources created in OnD3D11CreateDevice 
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
-{	
+{
 	DXUTGetGlobalResourceCache().OnDestroyDevice();
 
 	SAFE_RELEASE(g_pcbSimulationConstants);
@@ -1069,5 +1069,5 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
 	SAFE_RELEASE(g_pGridIndicesUAV);
 	SAFE_RELEASE(g_pGridIndices);
 
-	//SAFE_RELEASE(g_pRepositionParticlesCS);
+	SAFE_RELEASE(g_pRepositionParticlesCS);
 }
