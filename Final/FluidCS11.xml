@@ -1,0 +1,578 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        "FluidCS11"
+    </assembly>
+    <members>
+        <member name="M:Math.XMatrix4x4.Inverse(Math.XMatrix4x4*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Set the inverse of this matrix.
+</summary>
+            <param name="Inverse">The matrix to set as the inverse.</param>
+            <returns>A reference to the inverse matrix.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.SetOrientation(Math.XQuaternion!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Sets the Orientation of this matrix.
+</summary>
+            <param name="Orientation">A reference to the orientation to set this matrix to.</param>
+            <returns>A reference to this matrix.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.SetTranslation(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Sets the translation of this matrix.
+</summary>
+            <param name="Translation">A reference to the translation to set this matrix to.</param>
+            <returns>A reference to this matrix.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.GetOrientation(Math.XQuaternion*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Gets the orientation of this matrix.
+</summary>
+            <param name="Orientation">A reference to the orientation variable to fill in.</param>
+            <returns>The reference of the passed in orientation.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.GetTranslation(Math.XVector3*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Gets the translation of this matrix.
+</summary>
+            <param name="Translation">A reference to the translation variable to fill in.</param>
+            <returns>The reference of the passed in translation.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.op_MultiplicationAssignment(Math.XMatrix4x4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for multiplying two matrices with assignment.
+</summary>
+            <param name="a">The matrix to multiply to this matrix.</param>
+            <returns>A reference to this matrix.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.op_Multiply(Math.XMatrix4x4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for multiplying two matrices.
+</summary>
+            <param name="a">The matrix to multiply to this matrix.</param>
+            <returns>The new matrix.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.op_Multiply(Math.XVector4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Vector matrix multiplication.
+</summary>
+            <param name="a">The vector to multiply to this matrix.</param>
+            <returns>The new vector.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.op_Multiply(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Vector matrix multiplication.
+</summary>
+            <param name="a">The vector to multiply to this matrix.</param>
+            <returns>The new vector.</returns>
+        </member>
+        <member name="M:Math.XMatrix4x4.#ctor(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,Math.XQuaternion!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Constructor for a transformation matrix.
+</summary>
+            <param name="Translation">The translation for the matrix.</param>
+            <param name="Orientation">The orientation for the matrix.</param>
+        </member>
+        <member name="M:Math.XMatrix4x4.#ctor(System.Single!System.Runtime.CompilerServices.IsConst*)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="m">A matrix in array form.</param>
+        </member>
+        <member name="M:Math.XMatrix4x4.#ctor">
+            <summary>
+  Constructor.
+</summary>
+        </member>
+        <member name="T:Math.XMatrix4x4">
+            <summary>
+  Row major SSE implementation of a 4x4 matrix.
+</summary>
+        </member>
+        <member name="M:Math.XQuaternion.Conjugate(Math.XQuaternion*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Calculates the conjugate or inverse of a quaternion.
+</summary>
+            <param name="a">The quaternion to set as the inverse of this quaternion.</param>
+        </member>
+        <member name="M:Math.XQuaternion.Conjugate">
+            <summary>
+  Calculates the conjugate or inverse of a quaternion.
+</summary>
+        </member>
+        <member name="M:Math.XQuaternion.Magnitude">
+            <summary>
+  Calculates the magnitude of this quaternion.
+</summary>
+            <returns>The magnitude.</returns>
+        </member>
+        <member name="M:Math.XQuaternion.op_MultiplicationAssignment(Math.XQuaternion*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for multiplying two quaternions with assignment.
+</summary>
+            <param name="a">The quaternion to multiply to this quaterion.</param>
+            <returns>A reference to this quaternion.</returns>
+        </member>
+        <member name="M:Math.XQuaternion.op_Multiply(Math.XQuaternion*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for multiplying two quaternions.
+</summary>
+            <param name="a">The quaternion to multiply to this quaterion.</param>
+            <returns>The new quaternion.</returns>
+        </member>
+        <member name="M:Math.XQuaternion.#ctor(Math.XVector3*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="Angles">The Euler angles for the quaternion."</param>
+            <returns>A reference to this quaternion.</returns>
+        </member>
+        <member name="M:Math.XQuaternion.#ctor(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,System.Single)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="Axis">The normalized vector axis."</param>
+            <param name="Angle">The angle of the vector axis."</param>
+            <returns>A reference to this quaternion.</returns>
+        </member>
+        <member name="M:Math.XQuaternion.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="x">The x value.</param>
+            <param name="y">The y value.</param>
+            <param name="z">The z value.</param>
+            <param name="w">The w value.</param>
+        </member>
+        <member name="M:Math.XQuaternion.#ctor(__m128)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="x">A quaternion in __m128 form.</param>
+        </member>
+        <member name="M:Math.XQuaternion.#ctor(System.Single*)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="q">A quaternion in array form.</param>
+        </member>
+        <member name="M:Math.XQuaternion.#ctor">
+            <summary>
+  Constructor.
+</summary>
+        </member>
+        <member name="T:Math.XQuaternion">
+            <summary>
+  Provides SSE functionality for a quanternion.
+</summary>
+        </member>
+        <member name="M:Math.XVector4.op_Inequality(Math.XVector4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for not equals.
+</summary>
+            <param name="a">The vector to compare to this vector.</param>
+            <returns>The result of the comparison.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_Equality(Math.XVector4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for equals.
+</summary>
+            <param name="a">The vector to compare to this vector.</param>
+            <returns>The result of the comparison.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_Division(System.Single)">
+            <summary>
+  Functionality for dividing a vector with a scalar.
+</summary>
+            <remarks>Divide by zero needs to be masked.</remarks>
+            <param name="s">The scalar to divide from this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_Division(Math.XScalar!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for dividing a vector with a scalar.
+</summary>
+            <remarks>Divide by zero needs to be masked.</remarks>
+            <param name="s">The scalar to divide from this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_Multiply(System.Single)">
+            <summary>
+  Functionality for multiplying a vector with a scalar.
+</summary>
+            <param name="s">The scalar to multiply to this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_Multiply(Math.XScalar!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for multiplying a vector with a scalar.
+</summary>
+            <param name="s">The scalar to multiply to this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_Subtraction(Math.XVector4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for subtracting two vectors.
+</summary>
+            <param name="a">The vector to subtract from this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_Addition(Math.XVector4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for adding two vectors.
+</summary>
+            <param name="a">The vector to add to this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_DivisionAssignment(System.Single)">
+            <summary>
+  Functionality for dividing a vector with a scalar with assignment.
+</summary>
+            <remarks>Divide by zero needs to be masked.</remarks>
+            <param name="s">The scalar to divide from this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_DivisionAssignment(Math.XScalar!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for dividing a vector with a scalar with assignment.
+</summary>
+            <remarks>Divide by zero needs to be masked.</remarks>
+            <param name="s">The scalar to divide from this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_MultiplicationAssignment(System.Single)">
+            <summary>
+  Functionality for multiplying a vector with a scalar with assignment.
+</summary>
+            <param name="s">The scalar to multiply to this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_MultiplicationAssignment(Math.XScalar!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for multiplying a vector with a scalar with assignment.
+</summary>
+            <param name="s">The scalar to multiply to this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_SubtractionAssignment(Math.XVector4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for subtracting two vectors with assignment.
+</summary>
+            <param name="a">The vector to subtract from this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector4.op_AdditionAssignment(Math.XVector4!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for adding two vectors with assignment.
+</summary>
+            <param name="a">The vector to add to this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector4.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="x">The x value.</param>
+            <param name="y">The y value.</param>
+            <param name="z">The z value.</param>
+            <param name="w">The w value.</param>
+        </member>
+        <member name="M:Math.XVector4.#ctor(System.Single)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="f">The value to broadcast.</param>
+        </member>
+        <member name="M:Math.XVector4.#ctor(__m128)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="x">A vector in __m128 form.</param>
+        </member>
+        <member name="M:Math.XVector4.#ctor(System.Single*)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="v">A vector in array form.</param>
+        </member>
+        <member name="M:Math.XVector4.#ctor">
+            <summary>
+  Constructor.
+</summary>
+        </member>
+        <member name="T:Math.XVector4">
+            <summary>
+  Provides SSE functionality of a 3D vector with a modifier.
+</summary>
+        </member>
+        <member name="M:Math.XVector3.Normalize">
+            <summary>
+  Normalizes this vector.
+</summary>
+            <returns>A refrence to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector3.Magnitude">
+            <summary>
+  Returns the magnitude of the vector.
+</summary>
+            <returns>The magnitude of the vector.</returns>
+        </member>
+        <member name="M:Math.XVector3.Cross(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Returns the cross product of 2 vectors.
+</summary>
+            <param name="a">The other vector.</param>
+            <returns>The cross product.</returns>
+        </member>
+        <member name="M:Math.XVector3.Dot(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Returns the dot product of 2 vectors.
+</summary>
+            <param name="a">The other vector.</param>
+            <returns>The dot product.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_Inequality(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for not equals.
+</summary>
+            <param name="a">The vector to compare to this vector.</param>
+            <returns>The result of the comparison.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_Equality(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for equals.
+</summary>
+            <param name="a">The vector to compare to this vector.</param>
+            <returns>The result of the comparison.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_Division(System.Single)">
+            <summary>
+  Functionality for dividing a vector with a scalar.
+</summary>
+            <remarks>Divide by zero needs to be masked.</remarks>
+            <param name="s">The scalar to divide from this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_Division(Math.XScalar!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for dividing a vector with a scalar.
+</summary>
+            <remarks>Divide by zero needs to be masked.</remarks>
+            <param name="s">The scalar to divide from this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_Multiply(System.Single)">
+            <summary>
+  Functionality for multiplying a vector with a scalar.
+</summary>
+            <param name="s">The scalar to multiply to this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_Multiply(Math.XScalar!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for multiplying a vector with a scalar.
+</summary>
+            <param name="s">The scalar to multiply to this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_Subtraction(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for subtracting two vectors.
+</summary>
+            <param name="a">The vector to subtract from this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_Addition(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for adding two vectors.
+</summary>
+            <param name="a">The vector to add to this vector.</param>
+            <returns>The new vector created by this operation.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_DivisionAssignment(System.Single)">
+            <summary>
+  Functionality for dividing a vector with a scalar with assignment.
+</summary>
+            <remarks>Divide by zero needs to be masked.</remarks>
+            <param name="s">The scalar to divide from this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_DivisionAssignment(Math.XScalar!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for dividing a vector with a scalar with assignment.
+</summary>
+            <remarks>Divide by zero needs to be masked.</remarks>
+            <param name="s">The scalar to divide from this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_MultiplicationAssignment(System.Single)">
+            <summary>
+  Functionality for multiplying a vector with a scalar with assignment.
+</summary>
+            <param name="s">The scalar to multiply to this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_MultiplicationAssignment(Math.XScalar!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for multiplying a vector with a scalar with assignment.
+</summary>
+            <param name="s">The scalar to multiply to this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_SubtractionAssignment(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for subtracting two vectors with assignment.
+</summary>
+            <param name="a">The vector to subtract from this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector3.op_AdditionAssignment(Math.XVector3!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Functionality for adding two vectors with assignment.
+</summary>
+            <param name="a">The vector to add to this vector.</param>
+            <returns>A reference to this vector.</returns>
+        </member>
+        <member name="M:Math.XVector3.#ctor(System.Single,System.Single,System.Single)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="x">The x value.</param>
+            <param name="y">The y value.</param>
+            <param name="z">The z value.</param>
+        </member>
+        <member name="M:Math.XVector3.#ctor(System.Single)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="f">The value to broadcast.</param>
+        </member>
+        <member name="M:Math.XVector3.#ctor(__m128)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="x">A vector in __m128 form.</param>
+        </member>
+        <member name="M:Math.XVector3.#ctor(System.Single*)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="v">A vector in array form.</param>
+        </member>
+        <member name="M:Math.XVector3.#ctor">
+            <summary>
+  Constructor.
+</summary>
+        </member>
+        <member name="T:Math.XVector3">
+            <summary>
+  Provides SSE functionality for a 3D vector.
+</summary>
+        </member>
+        <member name="M:Math.XScalar.op_Implicit~System.Single">
+            <summary>
+  Provides a cast to an f32.
+</summary>
+            <returns>Ths XScalar as an f32.</returns>
+        </member>
+        <member name="M:Math.XScalar.#ctor(__m128)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="x">A broadcasted scalar value.</param>
+        </member>
+        <member name="M:Math.XScalar.#ctor(System.Single)">
+            <summary>
+  Constructor.
+</summary>
+            <param name="s">A scalar value.</param>
+        </member>
+        <member name="M:Math.XScalar.#ctor">
+            <summary>
+  Constructor.
+</summary>
+        </member>
+        <member name="T:Math.XScalar">
+            <summary>
+  A convenience class for doing scalar operations with the SSE vector classes.
+</summary>
+        </member>
+        <member name="M:Math.XVector.GetW">
+            <summary>
+  Returns the y value of the vector.
+</summary>
+            <returns>The w value of the vector.</returns>
+        </member>
+        <member name="M:Math.XVector.GetZ">
+            <summary>
+  Returns the z value of the vector.
+</summary>
+            <returns>The z value of the vector.</returns>
+        </member>
+        <member name="M:Math.XVector.GetY">
+            <summary>
+  Returns the y value of the vector.
+</summary>
+            <returns>The y value of the vector.</returns>
+        </member>
+        <member name="M:Math.XVector.GetX">
+            <summary>
+  Returns the x value of the vector.
+</summary>
+            <returns>The x value of the vector.</returns>
+        </member>
+        <member name="M:Math.XVector.op_Implicit~__m128!System.Runtime.CompilerServices.IsConst">
+            <summary>
+  Provides a const cast to a __m128.
+</summary>
+            <returns>This vector as a __m128.</returns>
+        </member>
+        <member name="M:Math.XVector.delete(System.Void*)">
+            <summary>
+  Operator delete override for deallocation of SSE aligned memory.
+</summary>
+            <param name="p">The pointer to deallocate.</param>
+        </member>
+        <member name="M:Math.XVector.new(System.UInt32)">
+            <summary>
+  Operator new override for allocation of SSE aligned memory.
+</summary>
+            <param name="Size">The size to allocate.</param>
+            <returns>A pointer to the allocated memory.</returns>
+        </member>
+        <member name="M:_mm_div_ps_composite(__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Divides 2 __m128 types and zeroes out indeterminate values caused by divide-by-zero.
+</summary>
+            <remarks>This function is used when masking divide-by-zero.</remarks>
+            <param name="a">The dividend.</param>
+            <param name="b">The divisor.</param>
+            <returns>The quotient.</returns>
+        </member>
+        <member name="M:_mm_add4_ps_composite(__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Convenience function for adding 4 __m128 types.
+</summary>
+            <param name="a">The first variable to add.</param>
+            <param name="b">The second variable to add.</param>
+            <param name="c">The third variable to add.</param>
+            <param name="d">The fourth variable to add.</param>
+            <returns>The four way add result.</returns>
+        </member>
+        <member name="M:_mm_add3_ps_composite(__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,__m128!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+  Convenience function for adding 3 __m128 types.
+</summary>
+            <param name="a">The first variable to add.</param>
+            <param name="b">The second variable to add.</param>
+            <param name="c">The third variable to add.</param>
+            <returns>The three way add result.</returns>
+        </member>
+        <member name="T:Math.Angle">
+            <summary>
+  Provides some functionality for dealing with angles.
+</summary>
+        </member>
+    </members>
+</doc>

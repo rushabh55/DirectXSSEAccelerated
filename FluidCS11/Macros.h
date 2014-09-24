@@ -45,7 +45,7 @@ typedef u64 uptr;
 typedef float f32;
 typedef double f64;
 
-typedef u32 Bool;     // Defines: True and False
+typedef u8 Bool;     // Defines: True and False
 typedef void* Handle;
 typedef u32 Error;
 
