@@ -1716,6 +1716,11 @@ HRESULT WINAPI DXUTCreateDevice(D3D_FEATURE_LEVEL reqFL,  bool bWindowed, int nS
     if( FAILED( hr ) )
         return hr;
     
+	if (FAILED(hr))
+	{
+
+	}
+
     return hr;
 }
 
