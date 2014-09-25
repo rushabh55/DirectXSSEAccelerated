@@ -641,6 +641,7 @@
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Demo1|Win32'">None</DebugInformationFormat>
     </ClCompile>
     <ClCompile Include="SSEDataTypes.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="MathX.h" />
     <ClInclude Include="SIMDOperations.h" />

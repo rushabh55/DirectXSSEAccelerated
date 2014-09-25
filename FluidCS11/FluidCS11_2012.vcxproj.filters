@@ -47,6 +47,7 @@
     <ClInclude Include="SIMDOperations.h">
       <Filter>SIMD</Filter>
     </ClInclude>
+    <ClInclude Include="Constants.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

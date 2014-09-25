@@ -9,98 +9,11 @@
 #include "WaitDlg.h"
 #include <sstream> 
 #include <algorithm>
+#include "Constants.h"
 
 #pragma warning( disable : 4100 )
 using namespace DirectX;
 using namespace Math;
-struct Particle
-{
-	XMFLOAT2 vPosition;
-	XMFLOAT2 vVelocity;
-};
-
-struct ParticleDensity
-{
-	f32 fDensity;
-};
-
-typedef struct ParticleForces
-{
-	XMFLOAT2 vAcceleration;
-};
-
-struct u322
-{
-	u32 x;
-	u32 y;
-} __declspec(align( 16 ));
-
-//--------------------------------------------------------------------------------------
-// Global variables
-//--------------------------------------------------------------------------------------
-
-// Compute Shader Constants
-// Grid cell key size for sorting, 8-bits for x and y
-const u64 NUM_GRID_INDICES = 65536;
-
-// Numthreads size for the simulation
-const u32 SIMULATION_BLOCK_SIZE = 256;
-
-// Numthreads size for the sort
-const u32 BITONIC_BLOCK_SIZE = 512;
-const u32 TRANSPOSE_BLOCK_SIZE = 16;
-
-// For this sample, only use power-of-2 numbers >= 8K and <= 64K
-// The algorithm can be extended to support any number of particles
-// But to keep the sample simple, we do not implement boundary conditions to handle it
-const u32 NUM_PARTICLES_64K = 64 * 1024;
-u32 g_iNumParticles = NUM_PARTICLES_64K;
-
-// Particle Properties
-// These will control how the fluid behaves
-
-
-
-static const f32 g_fInitialParticleSpacing = 0.0045f;
-static const f32 g_fSmoothlen = .012f;
-static const f32 g_fPressureStiffness = 200.0f;
-static const u16 g_fRestDensity = 1024.0f;
-const f32 g_fParticleMass = 0.0002f;
-const f32 g_fViscosity = 5.1f;
-const f32 g_fMaxAllowableTimeStep = 0.05f;
-const f32 g_fParticleRenderSize = 0.01f;
-
-
-// Gravity Directions
-static const XMFLOAT2A GRAVITY_DOWN(0, -1.0f);
-XMFLOAT2A g_vGravity = GRAVITY_DOWN;
-
-// Map Size
-// These values should not be larger than 256 * fSmoothlen
-// Since the map must be divided up into fSmoothlen sized grid cells
-// And the grid cell is used as a 16-bit sort key, 8-bits for x and y
-static const f32 g_fMapHeight = 1.2f;
-static const f32 g_fMapWidth = (4.0f / 3.0f) * g_fMapHeight;
-
-// Map Wall Collision Planes
-static const f32 g_fWallStiffness = 3000.0f;
-static const XMFLOAT3A g_vPlanes[4] = {
-	XMFLOAT3A(1, 0, 0),
-	XMFLOAT3A(0, 1, 0),
-	XMFLOAT3A(-1, 0, g_fMapWidth),
-	XMFLOAT3A(0, -1, g_fMapHeight)
-};
-
-// Simulation Algorithm
-enum eSimulationMode
-{
-	SIM_MODE_SIMPLE,
-	SIM_MODE_SHARED,
-	SIM_MODE_GRID
-};
-
-eSimulationMode g_eSimMode = SIM_MODE_GRID;
-
 
 
 XMFLOAT2A mousePosition;
@@ -247,7 +160,7 @@ void LoadTexture()
 //--------------------------------------------------------------------------------------
 i32 WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ i32 nCmdShow)
 {
-	Process();
+	//Process();
 	// Enable run-time memory check for debug builds.
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -325,14 +238,13 @@ LRESULT CALLBACK MsgProc(HWND hWnd, u32 uMsg, WPARAM wParam, LPARAM lParam, bool
 		mousePosition.x = point.x;
 		mousePosition.y = point.y;
 		LPRECT rect = new RECT();
-		//GetWindowRect(hWnd, rect2);
 		if (GetClientRect(hWnd, (LPRECT)rect))
 		{			
 			mousePosition.x -= rect->right / 2;
 			mousePosition.y -= rect->bottom / 2;
-			mousePosition.y *= -1;
-			delete rect;
+			mousePosition.y *= -1;			
 		}
+		delete rect;
 		return 1;
 	}
 	else if ( WM_LBUTTONUP )

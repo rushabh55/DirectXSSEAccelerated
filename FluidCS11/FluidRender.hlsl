@@ -45,10 +45,10 @@ struct GSParticleOut
 //--------------------------------------------------------------------------------------
 
 static const float4 Rainbow[5] = {
-    float4(0, 0, 1, 0.025),
-	float4(0.25, 0.25, 1, .1), 
-	float4(0.2, 0.2, 1, .01), 
-	float4(0.1, 0.1, 1, 0.075), 
+    float4(0.2, 0.2, 1, 0.025),
+	float4(0.15, 0.15, 1, .1), 
+	float4(0.1, 0.1, 1, .01), 
+	float4(0.05, 0.05, 1, 0.075), 
 	float4(0, 0, 1, 0.05), 
 };
 
@@ -69,9 +69,9 @@ float4 VisualizeNumber(float n, float lower, float upper)
 
 VSParticleOut ParticleVS(uint ID : SV_VertexID)
 {
-    VSParticleOut Out = (VSParticleOut)0;
+    VSParticleOut Out;
     Out.position = ParticlesRO[ID].position;
-    Out.color = VisualizeNumber(ParticleDensityRO[ID].density, 100.0f, 20000.0f);
+    Out.color = VisualizeNumber(ParticleDensityRO[ID].density, 10.0f, 200000.0f);
     return Out;
 }
 
