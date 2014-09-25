@@ -1,4 +1,6 @@
-#include "MathX.h"
+#include "WICTextureLoader.h"
+#include <thread>
+#include "SIMDOperations.h"
 #include "Macros.h"
 #include "DXUT.h"
 #include "DXUTsettingsDlg.h"
@@ -22,7 +24,7 @@ struct ParticleDensity
 	f32 fDensity;
 };
 
-struct ParticleForces
+typedef struct ParticleForces
 {
 	XMFLOAT2 vAcceleration;
 };
@@ -31,7 +33,7 @@ struct u322
 {
 	u32 x;
 	u32 y;
-};
+} __declspec(align( 16 ));
 
 //--------------------------------------------------------------------------------------
 // Global variables
@@ -68,7 +70,6 @@ const f32 g_fViscosity = 5.1f;
 const f32 g_fMaxAllowableTimeStep = 0.05f;
 const f32 g_fParticleRenderSize = 0.01f;
 
-XVector4 vars1 = Math::XVector4(g_fParticleMass, g_fSmoothlen, g_fPressureStiffness, g_fRestDensity);
 
 // Gravity Directions
 static const XMFLOAT2A GRAVITY_DOWN(0, -1.0f);
@@ -159,12 +160,12 @@ ID3D11UnorderedAccessView*          g_pGridPingPongUAV = nullptr;
 
 ID3D11Buffer*                       g_pGridIndices = nullptr;
 ID3D11ShaderResourceView*           g_pGridIndicesSRV = nullptr;
-ID3D11UnorderedAccessView*          g_pGridIndicesUAV = nullptr;
+ID3D11UnorderedAccessView*          g_pGridIndicesUAV = nullptr;/*
 
 ID3D11UnorderedAccessView*			m_pRepositionUAVs = nullptr;
 ID3D11ShaderResourceView*			m_pRepositionSRVs = nullptr;
 ID3D11Buffer*						m_pRepositionBuffers = nullptr;
-ID3D11Buffer*						m_debugRespositionBuffers = nullptr;
+ID3D11Buffer*						m_debugRespositionBuffers = nullptr;*/
 
 // Constant Buffer Layout
 #pragma warning(push)
@@ -213,6 +214,7 @@ ID3D11Buffer*                       g_pcbRenderConstants = nullptr;
 ID3D11Buffer*                       g_pSortCB = nullptr;
 
 
+
 //--------------------------------------------------------------------------------------
 // Forward declarations 
 //--------------------------------------------------------------------------------------
@@ -235,13 +237,17 @@ void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice);
 void InitApp();
 void RenderText();
-
+void LoadTexture()
+{
+	//Praveen implement this.
+}
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 i32 WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ i32 nCmdShow)
 {
+	Process();
 	// Enable run-time memory check for debug builds.
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -266,8 +272,8 @@ i32 WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	DXUTSetCursorSettings(true, true); // Show the cursor and clip it when in full screen
 	DXUTCreateWindow(L"FluidCS11");
 	DXUTCreateDevice(D3D_FEATURE_LEVEL_10_0, true, 1920, 1080);
+	LoadTexture();
 	DXUTMainLoop(); // Enter into the DXUT render loop
-
 	return DXUTGetExitCode();
 }
 
@@ -318,9 +324,15 @@ LRESULT CALLBACK MsgProc(HWND hWnd, u32 uMsg, WPARAM wParam, LPARAM lParam, bool
 		GetCursorPos((LPPOINT)&point);
 		mousePosition.x = point.x;
 		mousePosition.y = point.y;
-		LPRECT rect, rect2;
+		LPRECT rect = new RECT();
 		//GetWindowRect(hWnd, rect2);
-		GetClientRect(hWnd, rect);
+		if (GetClientRect(hWnd, (LPRECT)rect))
+		{			
+			mousePosition.x -= rect->right / 2;
+			mousePosition.y -= rect->bottom / 2;
+			mousePosition.y *= -1;
+			delete rect;
+		}
 		return 1;
 	}
 	else if ( WM_LBUTTONUP )
@@ -494,12 +506,12 @@ HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice)
 	DXUT_SetDebugName(g_pGridIndicesSRV, "Indices SRV");
 	DXUT_SetDebugName(g_pGridIndicesUAV, "Indices UAV");
 
-	V_RETURN(CreateStructuredBuffer < Particle >(pd3dDevice, g_iNumParticles, &m_pRepositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
-	V_RETURN(CreateStructuredBuffer < Particle>(pd3dDevice, g_iNumParticles, &m_debugRespositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
-	DXUT_SetDebugName(m_pRepositionBuffers, "reposition buffers");
-	DXUT_SetDebugName(m_pRepositionSRVs, "reposition SRV");
-	DXUT_SetDebugName(m_pRepositionUAVs, "reposition UAV");
-	DXUT_SetDebugName(m_debugRespositionBuffers, "Debug buffers ");
+	//V_RETURN(CreateStructuredBuffer < Particle >(pd3dDevice, g_iNumParticles, &m_pRepositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
+	//V_RETURN(CreateStructuredBuffer < Particle>(pd3dDevice, g_iNumParticles, &m_debugRespositionBuffers, &m_pRepositionSRVs, &m_pRepositionUAVs));
+	//DXUT_SetDebugName(m_pRepositionBuffers, "reposition buffers");
+	//DXUT_SetDebugName(m_pRepositionSRVs, "reposition SRV");
+	//DXUT_SetDebugName(m_pRepositionUAVs, "reposition UAV");
+	//DXUT_SetDebugName(m_debugRespositionBuffers, "Debug buffers ");
 	delete[] particles;
 
 	return S_OK;
@@ -525,7 +537,7 @@ HRESULT CALLBACK OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SURFAC
 	SAFE_RELEASE(pBlob);
 	DXUT_SetDebugName(g_pParticleVS, "ParticleVS");
 
-	V_RETURN(DXUTCompileFromFile(L"FluidRender.hlsl", nullptr, "ParticleGS", "gs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob));
+	V_RETURN(DXUTCompileFromFile(L"FluidRender.hlsl", nullptr, "ParticleGS", "gs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob));
 	V_RETURN(pd3dDevice->CreateGeometryShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pParticleGS));
 	SAFE_RELEASE(pBlob);
 	DXUT_SetDebugName(g_pParticleGS, "ParticleGS");
@@ -596,13 +608,6 @@ HRESULT CALLBACK OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SURFAC
 	SAFE_RELEASE(pBlob);
 	DXUT_SetDebugName(g_pRearrangeParticlesCS, "RearrangeParticlesCS");
 
-	V_RETURN(DXUTCompileFromFile(L"FluidCS11.hlsl", nullptr, "RepositionCS", CSTarget, D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob));
-	V_RETURN(pd3dDevice->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pRepositionParticlesCS));
-	SAFE_RELEASE(pBlob);
-	DXUT_SetDebugName(g_pRepositionParticlesCS, "RepositionParticlesCS");
-
-
-
 	// Sort Shaders
 	V_RETURN(DXUTCompileFromFile(L"ComputeShaderSort11.hlsl", nullptr, "BitonicSort", CSTarget, D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob));
 	V_RETURN(pd3dDevice->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pSortBitonic));
@@ -666,6 +671,7 @@ void GPUSort(ID3D11DeviceContext* pd3dImmediateContext,
 		pd3dImmediateContext->CSSetUnorderedAccessViews(0, 1, &inUAV, &UAVInitialCounts);
 		pd3dImmediateContext->CSSetShader(g_pSortBitonic, nullptr, 0);
 		pd3dImmediateContext->Dispatch(NUM_ELEMENTS / BITONIC_BLOCK_SIZE, 1, 1);
+		
 	}
 
 	// Then sort the rows and columns for the levels > than the block size
@@ -854,7 +860,7 @@ void SimulateFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 	// Simulation Constants
 	pData.iNumParticles = g_iNumParticles;
 	// Clamp the time step when the simulation runs slowly to prevent numerical explosion
-	pData.fTimeStep = std::min(g_fMaxAllowableTimeStep, fElapsedTime);
+	pData.fTimeStep = min(g_fMaxAllowableTimeStep, fElapsedTime);
 	pData.fSmoothlen = g_fSmoothlen;
 	pData.fPressureStiffness = g_fPressureStiffness;
 	pData.fRestDensity = g_fRestDensity;

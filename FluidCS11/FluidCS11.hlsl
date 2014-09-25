@@ -537,12 +537,3 @@ void IntegrateCS( uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint
     ParticlesRW[P_ID].position = position;
     ParticlesRW[P_ID].velocity = velocity;
 }
-
-
-[numthreads(SIMULATION_BLOCK_SIZE, 1, 1)]
-void RepositionCS(uint3 Gid : SV_GroupID, uint3 DTid : SV_DispatchThreadID, uint3 GTid : SV_GroupThreadID)
-{
-	const unsigned int P_ID = DTid.x;
-
-	float2 position = g_mousePosition;
-}

@@ -2,7 +2,21 @@
 
 // STL includes
 
-#include <math.h>
+#include <math.h> 
+
+#ifdef _FINAL 
+#ifndef INLINE 
+#define INLINE __forceinline
+#endif
+#elif _DEMO1
+#ifndef INLINE
+#define INLINE 
+#endif
+#else
+#ifndef INLINE
+#define INLINE
+#endif
+#endif
 
 #ifndef SafeNuke
 #define SafeNuke(p)       { if (p) { delete (p);     (p) = nullptr; } }
