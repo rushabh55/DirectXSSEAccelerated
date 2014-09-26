@@ -147,12 +147,33 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext);
 void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
 	f32 fElapsedTime, void* pUserContext);
 
-HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice);
+HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext);
 void InitApp();
 void RenderText();
-void LoadTexture()
+void LoadTexture(ID3D11Device* pd3dDevice,ID3D11DeviceContext* pd3dImmediateContext)
 {
+	wchar_t* path;
+	ID3D11ShaderResourceView *srv;
+	ID3D11SamplerState* samplerState;
 	//Praveen implement this.
+	HRESULT hr = CreateWICTextureFromFile(pd3dDevice, pd3dImmediateContext, L"water.bmp", nullptr, &srv);
+	if (FAILED(hr))
+	{
+		
+	}
+
+
+	D3D11_SAMPLER_DESC sample_desc;
+
+	sample_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sample_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sample_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sample_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sample_desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sample_desc.MinLOD = 0;
+	sample_desc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	pd3dDevice->CreateSamplerState(&sample_desc, &samplerState);
 }
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -168,7 +189,7 @@ i32 WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
 	// DXUT will create and use the best device
 	// that is available on the system depending on which D3D callbacks are set below
-
+	//ID3D11Device* pd3dDevice; ID3D11DeviceContext* pd3dImmediateContext;
 	// Set DXUT callbacks
 	DXUTSetCallbackDeviceChanging(ModifyDeviceSettings);
 	DXUTSetCallbackMsgProc(MsgProc);
@@ -185,7 +206,7 @@ i32 WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	DXUTSetCursorSettings(true, true); // Show the cursor and clip it when in full screen
 	DXUTCreateWindow(L"FluidCS11");
 	DXUTCreateDevice(D3D_FEATURE_LEVEL_10_0, true, 1920, 1080);
-	LoadTexture();
+	LoadTexture(DXUTGetD3D11Device(), DXUTGetD3D11DeviceContext());
 	DXUTMainLoop(); // Enter into the DXUT render loop
 	return DXUTGetExitCode();
 }
@@ -424,7 +445,7 @@ HRESULT CreateSimulationBuffers(ID3D11Device* pd3dDevice)
 	//DXUT_SetDebugName(m_pRepositionSRVs, "reposition SRV");
 	//DXUT_SetDebugName(m_pRepositionUAVs, "reposition UAV");
 	//DXUT_SetDebugName(m_debugRespositionBuffers, "Debug buffers ");
-	delete[] particles;
+	//delete[] particles;
 
 	return S_OK;
 }
@@ -646,12 +667,31 @@ void SimulateFluid_Simple(ID3D11DeviceContext* pd3dImmediateContext)
 	pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
 
 	// Integrate
-	pd3dImmediateContext->CopyResource(g_pSortedParticles, g_pParticles);
-	pd3dImmediateContext->CSSetShaderResources(0, 1, &g_pSortedParticlesSRV);
-	pd3dImmediateContext->CSSetUnorderedAccessViews(0, 1, &g_pParticlesUAV, &UAVInitialCounts);
-	pd3dImmediateContext->CSSetShaderResources(2, 1, &g_pParticleForcesSRV);
-	pd3dImmediateContext->CSSetShader(g_pIntegrateCS, nullptr, 0);
-	pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+	//pd3dImmediateContext->CopyResource(g_pSortedParticles, g_pParticles);
+	//pd3dImmediateContext->CSSetShaderResources(0, 1, &g_pSortedParticlesSRV);
+	//pd3dImmediateContext->CSSetUnorderedAccessViews(0, 1, &g_pParticlesUAV, &UAVInitialCounts);
+	//pd3dImmediateContext->CSSetShaderResources(2, 1, &g_pParticleForcesSRV);
+	//pd3dImmediateContext->CSSetShader(g_pIntegrateCS, nullptr, 0);
+	//pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+
+	                      //g_pParticleForces
+
+	ParticleForces *part_buf;
+	D3D11_MAPPED_SUBRESOURCE MappedResource;
+	pd3dImmediateContext->Map(g_pParticleForces, 0, D3D11_MAP_READ, 0, &MappedResource);
+
+	part_buf = (ParticleForces*)MappedResource.pData;
+
+	for (u32 i = 0; i < g_iNumParticles; i++)
+	{
+		vector<Particle> p;
+
+		p.push_back(particles[i]);
+
+		Process(0,particles[i].vPosition,p, part_buf);
+	}
+	
+
 }
 
 
@@ -678,12 +718,29 @@ void SimulateFluid_Shared(ID3D11DeviceContext* pd3dImmediateContext)
 	pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
 
 	// Integrate
-	pd3dImmediateContext->CopyResource(g_pSortedParticles, g_pParticles);
-	pd3dImmediateContext->CSSetShaderResources(0, 1, &g_pSortedParticlesSRV);
-	pd3dImmediateContext->CSSetUnorderedAccessViews(0, 1, &g_pParticlesUAV, &UAVInitialCounts);
-	pd3dImmediateContext->CSSetShaderResources(2, 1, &g_pParticleForcesSRV);
-	pd3dImmediateContext->CSSetShader(g_pIntegrateCS, nullptr, 0);
-	pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+	// Integrate
+	//pd3dImmediateContext->CopyResource(g_pSortedParticles, g_pParticles);
+	//pd3dImmediateContext->CSSetShaderResources(0, 1, &g_pSortedParticlesSRV);
+	//pd3dImmediateContext->CSSetUnorderedAccessViews(0, 1, &g_pParticlesUAV, &UAVInitialCounts);
+	//pd3dImmediateContext->CSSetShaderResources(2, 1, &g_pParticleForcesSRV);
+	//pd3dImmediateContext->CSSetShader(g_pIntegrateCS, nullptr, 0);
+	//pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+	ParticleForces *part_buf;
+	D3D11_MAPPED_SUBRESOURCE MappedResource;
+	pd3dImmediateContext->Map(g_pParticleForces, 0, D3D11_MAP_READ, 0, &MappedResource);
+
+	part_buf = (ParticleForces*)MappedResource.pData;
+
+	for (u32 i = 0; i < g_iNumParticles; i++)
+	{
+		vector<Particle> p;
+
+		p.push_back(particles[i]);
+
+		Process(0, particles[i].vPosition, p, part_buf);
+	}
+
+
 }
 
 
@@ -752,10 +809,28 @@ void SimulateFluid_Grid(ID3D11DeviceContext* pd3dImmediateContext)
 	pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
 
 	// Integrate
-	pd3dImmediateContext->CSSetUnorderedAccessViews(0, 1, &g_pParticlesUAV, &UAVInitialCounts);
-	pd3dImmediateContext->CSSetShaderResources(2, 1, &g_pParticleForcesSRV);
-	pd3dImmediateContext->CSSetShader(g_pIntegrateCS, nullptr, 0);
-	pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+	// Integrate
+	//pd3dImmediateContext->CopyResource(g_pSortedParticles, g_pParticles);
+	//pd3dImmediateContext->CSSetShaderResources(0, 1, &g_pSortedParticlesSRV);
+	//pd3dImmediateContext->CSSetUnorderedAccessViews(0, 1, &g_pParticlesUAV, &UAVInitialCounts);
+	//pd3dImmediateContext->CSSetShaderResources(2, 1, &g_pParticleForcesSRV);
+	//pd3dImmediateContext->CSSetShader(g_pIntegrateCS, nullptr, 0);
+	//pd3dImmediateContext->Dispatch(g_iNumParticles / SIMULATION_BLOCK_SIZE, 1, 1);
+
+	ParticleForces *part_buf;
+	D3D11_MAPPED_SUBRESOURCE MappedResource;
+	pd3dImmediateContext->Map(g_pParticleForces, 0, D3D11_MAP_READ, 0, &MappedResource);
+
+	part_buf = (ParticleForces*)MappedResource.pData;
+
+	for (u32 i = 0; i < g_iNumParticles; i++)
+	{
+		vector<Particle> p;
+
+		p.push_back(particles[i]);
+
+		Process(0, particles[i].vPosition, p, part_buf);
+	}
 }
 
 

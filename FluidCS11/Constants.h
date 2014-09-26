@@ -25,6 +25,8 @@ struct ParticleDensity
 typedef struct ParticleForces
 {
 	XMFLOAT2 vAcceleration;
+
+
 };
 
 struct u322

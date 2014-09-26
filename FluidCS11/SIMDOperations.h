@@ -6,9 +6,9 @@
 
 using namespace std;
 static vector<Particle> ParticlesRW;
-static INLINE void Process(const unsigned int DTid, const XMFLOAT2 g_fTimeStep, vector<Particle> ParticlesRO)
+static INLINE void Process(const unsigned int DTid, const XMFLOAT2 g_fTimeStep, vector<Particle> ParticlesRO,ParticleForces ParticlesForcesRO[])
 {
-	vector<ParticleForces> ParticlesForcesRO;
+	
 	const unsigned int P_ID = DTid; // Particle ID to operate on
 
 	XMFLOAT2 position = ParticlesRO.at(P_ID).vPosition;
