@@ -17,15 +17,11 @@
     <None Include="..\..\DXUT11\Optional\directx.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="FluidRender.hlsl">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FluidCS11.cpp" />
     <CLInclude Include="WaitDlg.h" />
     <ClCompile Include="SSEDataTypes.h" />
-    <ClCompile Include="MathX.cpp" />
     <ClCompile Include="Material.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -44,7 +40,6 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
     <ClInclude Include="Macros.h" />
-    <ClInclude Include="MathX.h" />
     <ClInclude Include="SIMDOperations.h">
       <Filter>SIMD</Filter>
     </ClInclude>
@@ -52,5 +47,14 @@
     <ClInclude Include="Material.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="ParticleVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticlePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleGS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

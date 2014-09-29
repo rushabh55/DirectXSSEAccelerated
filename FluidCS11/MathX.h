@@ -25,49 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-/// <summary>
-///   Convenience function for adding 3 __m128 types.
-/// </summary>
-/// <param name="a">The first variable to add.</param>
-/// <param name="b">The second variable to add.</param>
-/// <param name="c">The third variable to add.</param>
-/// <returns>The three way add result.</returns>
-__m128 __forceinline _mm_add3_ps_composite( const __m128& a, const __m128& b, const __m128& c )
-{
-    return _mm_add_ps( _mm_add_ps( a, b ), c );
-}
-
-
-/// <summary>
-///   Convenience function for adding 4 __m128 types.
-/// </summary>
-/// <param name="a">The first variable to add.</param>
-/// <param name="b">The second variable to add.</param>
-/// <param name="c">The third variable to add.</param>
-/// <param name="d">The fourth variable to add.</param>
-/// <returns>The four way add result.</returns>
-__m128 __forceinline _mm_add4_ps_composite( const __m128& a, const __m128& b,
-                                            const __m128& c, const __m128& d )
-{
-    return _mm_add_ps( _mm_add_ps( a, b ), _mm_add_ps( c, d ) );
-}
-
-
-/// <summary>
-///   Divides 2 __m128 types and zeroes out indeterminate values caused by divide-by-zero.
-/// </summary>
-/// <remarks>This function is used when masking divide-by-zero.</remarks>
-/// <param name="a">The dividend.</param>
-/// <param name="b">The divisor.</param>
-/// <returns>The quotient.</returns>
-__m128 __forceinline _mm_div_ps_composite( const __m128& a, const __m128& b )
-{
-    __m128 xMask = _mm_cmpneq_ps( b, _mm_setzero_ps() );
-    __m128 t = _mm_div_ps( a, b );
-    t = _mm_and_ps( t, xMask );
-    return t;
-}
-
 
 namespace Math
 {
