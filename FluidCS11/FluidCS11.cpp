@@ -24,6 +24,9 @@ static bool sseEnabled = false;
 XMFLOAT2A mousePosition;
 //--------------------------------------------------------------------------------------
 // Direct3D11 Global variables
+
+///<Summary>
+///</Summary>
 //--------------------------------------------------------------------------------------
 ID3D11ShaderResourceView * const     g_pNullSRV = nullptr;       // Helper to Clear SRVs
 ID3D11UnorderedAccessView* const    g_pNullUAV = nullptr;       // Helper to Clear UAVs
