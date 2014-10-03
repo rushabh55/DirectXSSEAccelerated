@@ -21,6 +21,7 @@ using namespace Math;
 
 ID3D11ShaderResourceView* resourceView;
 ID3D11SamplerState* samplerState;
+D3D11_SAMPLER_DESC sBufferDesc;
 
 static bool sseEnabled = false;
 XMFLOAT2A mousePosition;
@@ -187,21 +188,25 @@ void LoadTexture()
 		int x = 2;
 	}
 
-
-	D3D11_SAMPLER_DESC sBufferDesc;
 	sBufferDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sBufferDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sBufferDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sBufferDesc.Filter = D3D11_FILTER_COMPARISON_ANISOTROPIC;
+	sBufferDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 	sBufferDesc.MaxAnisotropy = 16;
+
+
 
 	HRESULT hr = pd3device->CreateSamplerState(
 		&sBufferDesc,
 		&samplerState);
+	SAFE_RELEASE(texture);
 
 	if (FAILED(hr))
 	{
-		}
+	}
+
+	
+
 }
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -1122,6 +1127,8 @@ void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateCon
 	pd3dImmediateContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	//Set buffers for texture
+
+	
 	
 		pd3dImmediateContext->PSSetShaderResources(3, 1, &resourceView);
 		pd3dImmediateContext->PSSetSamplers(0, 1, &samplerState);

@@ -26,7 +26,8 @@ VSParticleOut ParticleVS(uint ID : SV_VertexID, VSParticleOut ot)
 {
 	VSParticleOut Out;
 	Out.position = ParticlesRO[ID].VARS.xy;
-	Out.uv = ot.uv;
+	Out.uv.x = 0.0f;
+	Out.uv.y = 1.0f;
 	Out.color = VisualizeNumber(ID);
 	return Out;
 }
