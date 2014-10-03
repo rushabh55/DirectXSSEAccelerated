@@ -36,9 +36,9 @@ struct FOO
 {
 	float4 color;
 };
-StructuredBuffer<Particle> ParticlesRO : register(t0);
-StructuredBuffer<ParticleDensity> ParticleDensityRO : register(t1);
-StructuredBuffer<FOO> ParticleColor : register(t2);
+StructuredBuffer<Particle> ParticlesRO					: register(t0);
+StructuredBuffer<ParticleDensity> ParticleDensityRO		: register(t1);
+StructuredBuffer<FOO> ParticleColor						: register(t2);
 
 
 

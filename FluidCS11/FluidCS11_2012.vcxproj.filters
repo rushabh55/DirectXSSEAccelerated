@@ -22,7 +22,6 @@
     <ClCompile Include="FluidCS11.cpp" />
     <CLInclude Include="WaitDlg.h" />
     <ClCompile Include="SSEDataTypes.h" />
-    <ClCompile Include="Material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ComputeShaderSort11.hlsl">
@@ -44,7 +43,6 @@
       <Filter>SIMD</Filter>
     </ClInclude>
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="Material.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ParticleVS.hlsl">

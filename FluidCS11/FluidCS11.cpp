@@ -19,6 +19,8 @@
 using namespace DirectX;
 using namespace Math;
 
+ID3D11ShaderResourceView* resourceView;
+ID3D11SamplerState* samplerState;
 
 static bool sseEnabled = false;
 XMFLOAT2A mousePosition;
@@ -167,7 +169,39 @@ void InitApp();
 void RenderText();
 void LoadTexture()
 {
-	//Praveen implement this.
+	ID3D11Device * pd3device = DXUTGetD3D11Device();
+	ID3D11DeviceContext *pd3devicecontext = DXUTGetD3D11DeviceContext();
+	ID3D11Resource* texture;
+
+
+	HRESULT abc;
+	abc = CreateWICTextureFromFile(
+		pd3device,
+		pd3devicecontext,
+		L"waterParticle.png",
+		&texture,
+		&resourceView
+		);
+	if (FAILED(abc))
+	{
+		int x = 2;
+	}
+
+
+	D3D11_SAMPLER_DESC sBufferDesc;
+	sBufferDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sBufferDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sBufferDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sBufferDesc.Filter = D3D11_FILTER_COMPARISON_ANISOTROPIC;
+	sBufferDesc.MaxAnisotropy = 16;
+
+	HRESULT hr = pd3device->CreateSamplerState(
+		&sBufferDesc,
+		&samplerState);
+
+	if (FAILED(hr))
+	{
+		}
 }
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -276,7 +310,7 @@ i32 WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	DXUTSetCursorSettings(true, true); // Show the cursor and clip it when in full screen
 	DXUTCreateWindow(L"FluidCS11");
 	DXUTCreateDevice(D3D_FEATURE_LEVEL_10_0, true, 1920, 1080);
-	//LoadTexture();
+	LoadTexture();
 	//CreateSecondaryWindow(nCmdShow);
 	DXUTMainLoop(); // Enter into the DXUT render loop
 	return DXUTGetExitCode();
@@ -635,7 +669,7 @@ HRESULT CALLBACK OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SURFAC
 {
 	HRESULT hr;
 
-	auto pd3dImmediateContext = DXUTGetD3D11DeviceContext();
+	const ID3D11DeviceContext const * pd3dImmediateContext = DXUTGetD3D11DeviceContext();
 
 	// Compile the Shaders
 	ID3DBlob* pBlob = nullptr;
@@ -1053,6 +1087,7 @@ void SimulateFluid(ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 //--------------------------------------------------------------------------------------
 void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, f32 fElapsedTime)
 {
+	static int i = 0;
 	// Simple orthographic projection to display the entire map
 	XMMATRIX mView = XMMatrixTranslation(-g_fMapWidth / 2.0f, -g_fMapHeight / 2.0f, 0);
 	XMMATRIX mProjection = XMMatrixOrthographicLH(g_fMapWidth, g_fMapHeight, 0, 1);
@@ -1086,13 +1121,22 @@ void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateCon
 	
 	pd3dImmediateContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 
+	//Set buffers for texture
+	
+		pd3dImmediateContext->PSSetShaderResources(3, 1, &resourceView);
+		pd3dImmediateContext->PSSetSamplers(0, 1, &samplerState);
+		
+
 	// Draw the mesh
 	pd3dImmediateContext->Draw(g_iNumParticles, 0);
+
 
 	// Unset the particles buffer
 	pd3dImmediateContext->VSSetShaderResources(0, 1, &g_pNullSRV);
 	pd3dImmediateContext->VSSetShaderResources(1, 1, &g_pNullSRV);
 	pd3dImmediateContext->VSSetShaderResources(2, 1, &g_pNullSRV);
+
+
 }
 
 void OnUpdate()
@@ -1182,6 +1226,8 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
 	SAFE_RELEASE(g_pcbSimulationConstants);
 	SAFE_RELEASE(g_pcbRenderConstants);
 	SAFE_RELEASE(g_pSortCB);
+	SAFE_RELEASE(samplerState);
+	SAFE_RELEASE(resourceView);
 
 	SAFE_RELEASE(g_pParticleVS);
 	SAFE_RELEASE(g_pParticleGS);

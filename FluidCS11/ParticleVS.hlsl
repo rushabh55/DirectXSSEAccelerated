@@ -2,6 +2,7 @@ struct VSParticleOut
 {
 	float2 position : POSITION;
 	float4 color : COLOR;
+	float2 uv : TEXCOORD; //added
 };
 
 struct Particle
@@ -21,10 +22,11 @@ float4 VisualizeNumber(uint n)
 	return ParticleColor[n].color;
 }
 
-VSParticleOut ParticleVS(uint ID : SV_VertexID)
+VSParticleOut ParticleVS(uint ID : SV_VertexID, VSParticleOut ot)
 {
 	VSParticleOut Out;
 	Out.position = ParticlesRO[ID].VARS.xy;
+	Out.uv = ot.uv;
 	Out.color = VisualizeNumber(ID);
 	return Out;
 }
