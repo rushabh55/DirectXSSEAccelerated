@@ -6,7 +6,7 @@ struct GSParticleOut
 };
 
 Texture2D myTexture : register(t3);
-SamplerState mySampler	: register(s0);
+SamplerState mySampler	: register(s1);
 
 
 float4 ParticlePS(GSParticleOut In) : SV_Target
