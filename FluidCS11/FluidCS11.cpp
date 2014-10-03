@@ -170,11 +170,10 @@ void InitApp();
 void RenderText();
 void LoadTexture()
 {
+	
 	ID3D11Device * pd3device = DXUTGetD3D11Device();
 	ID3D11DeviceContext *pd3devicecontext = DXUTGetD3D11DeviceContext();
 	ID3D11Resource* texture;
-
-
 	HRESULT abc;
 	abc = CreateWICTextureFromFile(
 		pd3device,
@@ -183,6 +182,7 @@ void LoadTexture()
 		&texture,
 		&resourceView
 		);
+<<<<<<< HEAD
 	if (FAILED(abc))
 	{
 		int x = 2;
@@ -193,6 +193,14 @@ void LoadTexture()
 	sBufferDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	sBufferDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 	sBufferDesc.MaxAnisotropy = 16;
+=======
+
+	D3D11_SAMPLER_DESC sBufferDesc;
+	sBufferDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sBufferDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sBufferDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sBufferDesc.Filter = D3D11_FILTER_COMPARISON_ANISOTROPIC;
+>>>>>>> 2c64572222b0d69d40349632456180d38d096957
 
 
 
@@ -201,12 +209,16 @@ void LoadTexture()
 		&samplerState);
 	SAFE_RELEASE(texture);
 
+<<<<<<< HEAD
 	if (FAILED(hr))
 	{
 	}
 
 	
 
+=======
+	HRESULT p = hr;
+>>>>>>> 2c64572222b0d69d40349632456180d38d096957
 }
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -661,10 +673,8 @@ INLINE void UpdateColor()
 		catch (std::exception& e){
 			//OutputDebugStringA(e.what);
 		}
-	{
-		delete f;
 	}
-	}
+	delete f;
 }
 //--------------------------------------------------------------------------------------
 // Create any D3D11 resources that aren't dependant on the back buffer
@@ -1130,8 +1140,8 @@ void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateCon
 
 	
 	
-		pd3dImmediateContext->PSSetShaderResources(3, 1, &resourceView);
-		pd3dImmediateContext->PSSetSamplers(0, 1, &samplerState);
+	pd3dImmediateContext->PSSetShaderResources(3, 1, &resourceView);
+	pd3dImmediateContext->PSSetSamplers(1, 1, &samplerState);
 		
 
 	// Draw the mesh
@@ -1142,8 +1152,6 @@ void RenderFluid(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateCon
 	pd3dImmediateContext->VSSetShaderResources(0, 1, &g_pNullSRV);
 	pd3dImmediateContext->VSSetShaderResources(1, 1, &g_pNullSRV);
 	pd3dImmediateContext->VSSetShaderResources(2, 1, &g_pNullSRV);
-
-
 }
 
 void OnUpdate()
@@ -1198,6 +1206,7 @@ void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 	auto deviceContext = DXUTGetD3D11DeviceContext();
 	DirectX::CommonStates states(DXUTGetD3D11Device());
 	deviceContext->OMSetBlendState(states.NonPremultiplied(), nullptr, 0xFFFFFFFF);
+
 	// Clear the render target and depth stencil
 	auto pRTV = DXUTGetD3D11RenderTargetView();
 	pd3dImmediateContext->ClearRenderTargetView(pRTV, Colors::Black);
@@ -1209,8 +1218,6 @@ void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 	RenderFluid(pd3dDevice, pd3dImmediateContext, fElapsedTime);
 
 	RenderText();
-
-	//OnUpdate();
 }
 
 
