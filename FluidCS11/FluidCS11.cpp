@@ -182,43 +182,17 @@ void LoadTexture()
 		&texture,
 		&resourceView
 		);
-<<<<<<< HEAD
-	if (FAILED(abc))
-	{
-		int x = 2;
-	}
-
-	sBufferDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sBufferDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sBufferDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sBufferDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-	sBufferDesc.MaxAnisotropy = 16;
-=======
-
 	D3D11_SAMPLER_DESC sBufferDesc;
 	sBufferDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sBufferDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sBufferDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	sBufferDesc.Filter = D3D11_FILTER_COMPARISON_ANISOTROPIC;
->>>>>>> 2c64572222b0d69d40349632456180d38d096957
-
-
 
 	HRESULT hr = pd3device->CreateSamplerState(
 		&sBufferDesc,
 		&samplerState);
 	SAFE_RELEASE(texture);
 
-<<<<<<< HEAD
-	if (FAILED(hr))
-	{
-	}
-
-	
-
-=======
-	HRESULT p = hr;
->>>>>>> 2c64572222b0d69d40349632456180d38d096957
 }
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 

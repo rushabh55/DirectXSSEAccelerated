@@ -179,7 +179,7 @@ const u32 TRANSPOSE_BLOCK_SIZE = 16;
 // For this sample, only use power-of-2 numbers >= 8K and <= 64K
 // The algorithm can be extended to support any number of particles
 // But to keep the sample simple, we do not implement boundary conditions to handle it
-const u32 NUM_PARTICLES_64K = 16 * 1024;
+const u32 NUM_PARTICLES_64K = 8 * 1024;
 u32 g_iNumParticles = NUM_PARTICLES_64K;
 
 // Particle Properties
